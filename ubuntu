@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 if [[ -z $STOW_FOLDERS ]]; then
-    STOW_FOLDERS="i3,tmux"
+    STOW_FOLDERS="i3,redshift"
 fi
 
 if [[ -z $DOTFILES ]]; then
