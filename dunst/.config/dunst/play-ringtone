@@ -1,0 +1,2 @@
+#!/bin/sh
+play -q ~/.config/dunst/hxh-ringtone.ogg

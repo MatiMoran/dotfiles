@@ -203,4 +203,9 @@ exec xrandr --output $m2 --right-of $m1
 # workspace $ws8 output $m2
 # workspace $ws10 output $m2
 
+bindsym $mod+Ctrl+l move workspace to output right
+bindsym $mod+Ctrl+Right move workspace to output right
+bindsym $mod+Ctrl+h move workspace to output left
+bindsym $mod+Ctrl+Left move workspace to output left
+
 exec redshift -P -O 2700
