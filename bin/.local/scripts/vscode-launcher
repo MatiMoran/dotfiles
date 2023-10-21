@@ -1,0 +1,7 @@
+#!/bin/sh
+REPOS="/mnt/A88277D98277AB08/BINIT/Repos/ /mnt/A88277D98277AB08/Personal/ /mnt/A88277D98277AB08/UBA/Algo2/Repos/"
+DIRECTORY=$(fdfind -d 1 . $REPOS | fzf)
+if [ ! -z "$DIRECTORY" ]
+then
+      code $DIRECTORY
+fi
