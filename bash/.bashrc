@@ -120,3 +120,5 @@ fi
 export PATH="$PATH:$HOME/.dotnet/tools"
 alias find='fdfind'
 alias grep='rg'
+
+bind -x '"\C-evo" : exec .local/scripts/vscode-launcher'
