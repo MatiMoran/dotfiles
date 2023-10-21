@@ -118,3 +118,5 @@ fi
 
 
 export PATH="$PATH:$HOME/.dotnet/tools"
+alias find='fdfind'
+alias grep='rg'
