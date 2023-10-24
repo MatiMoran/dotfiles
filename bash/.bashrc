@@ -121,6 +121,5 @@ export PATH="$PATH:$HOME/.dotnet/tools"
 alias find='fdfind'
 alias grep='rg'
 
-bind -x '"\C-eco" : exec ~/.local/scripts/vscode-launcher'
-bind -x '"\C-evo" : exec ~/.local/scripts/nvim-launcher'
+bind -x '"\C-f" : exec ~/.local/scripts/editor-launcher'
 bind -x '"\C-ecd" : source ~/.local/scripts/cd-fzf'

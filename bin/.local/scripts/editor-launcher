@@ -1,7 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 REPOS="$HOME /mnt/A88277D98277AB08/BINIT/Repos/ /mnt/A88277D98277AB08/Personal/ /mnt/A88277D98277AB08/UBA/Algo2/Repos/"
 DIRECTORY=$(fdfind -H -d 1 . $REPOS | fzf)
-if [ ! -z "$DIRECTORY" ]
-then
-      nvim $DIRECTORY
+PROGRAM=$(echo nvim code | tr " " "\n" | fzf)
+
+if [ ! -z "$DIRECTORY" ] && [ ! -z "$PROGRAM" ]; then
+      $PROGRAM $DIRECTORY
 fi
