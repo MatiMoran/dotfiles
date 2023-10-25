@@ -118,6 +118,7 @@ fi
 
 
 export PATH="$PATH:$HOME/.dotnet/tools"
+export PATH=:"$PATH:/usr/local/go/bin"
 alias find='fdfind'
 alias grep='rg'
 
