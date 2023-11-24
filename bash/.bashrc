@@ -88,7 +88,7 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -alF'
+alias ll='ls -ahlF'
 alias la='ls -A'
 alias l='ls -CF'
 
@@ -119,8 +119,11 @@ fi
 
 export PATH="$PATH:$HOME/.dotnet/tools"
 export PATH=:"$PATH:/usr/local/go/bin"
+export REPOS="$HOME /mnt/A88277D98277AB08/BINIT/Repos/ /mnt/A88277D98277AB08/Personal/ /mnt/A88277D98277AB08/UBA/Algo2/Repos/ /mnt/A88277D98277AB08/UBA/Algo2/Repos/ /mnt/A88277D98277AB08/UBA/ALC/Repos/" 
 alias find='fdfind'
 alias grep='rg'
 
 bind -x '"\C-f" : exec ~/.local/scripts/editor-launcher'
-bind -x '"\C-ecd" : source ~/.local/scripts/cd-fzf'
+
+export PATH="$PATH:/opt/mssql-tools18/bin"
+export DOTNET_ROOT=/usr/share/dotnet
