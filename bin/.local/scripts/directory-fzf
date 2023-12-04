@@ -1,0 +1,11 @@
+#!/bin/bash
+DIRECTORY=$(fdfind -H -d 1 . $REPOS | fzf)
+ACTION=$(echo nvim code cd | tr " " "\n" | fzf)
+
+if [ "$ACTION" = "nvim" ]; then
+    cd $DIRECTORY
+fi
+
+if [ ! -z "$DIRECTORY" ] && [ ! -z "$ACTION" ]; then
+    $ACTION $DIRECTORY
+fi

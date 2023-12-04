@@ -1,7 +1,0 @@
-#!/bin/bash
-DIRECTORY=$(fdfind -H -d 1 . $REPOS | fzf)
-PROGRAM=$(echo nvim code | tr " " "\n" | fzf)
-
-if [ ! -z "$DIRECTORY" ] && [ ! -z "$PROGRAM" ]; then
-      $PROGRAM $DIRECTORY
-fi

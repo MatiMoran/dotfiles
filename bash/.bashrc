@@ -123,7 +123,7 @@ export REPOS="$HOME /mnt/A88277D98277AB08/BINIT/Repos/ /mnt/A88277D98277AB08/Per
 alias find='fdfind'
 alias grep='rg'
 
-bind -x '"\C-f" : exec ~/.local/scripts/editor-launcher'
+bind -x '"\C-f" : source ~/.local/scripts/directory-fzf'
 
 export PATH="$PATH:/opt/mssql-tools18/bin"
 export DOTNET_ROOT=/usr/share/dotnet
