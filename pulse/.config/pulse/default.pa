@@ -6,4 +6,4 @@ set-default-source alsa_input.usb-Kingston_Technology_Company_HyperX_Cloud_Fligh
 load-module module-equalizer-sink
 load-module module-dbus-protocol
 
-set-default-sink alsa_output.pci-0000_00_1f.3.analog-stereo.equalizer
+set-default-sink alsa_output.usb-Kingston_Technology_Company_HyperX_Cloud_Flight_Wireless-00.analog-stereo
