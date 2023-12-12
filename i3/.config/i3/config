@@ -210,3 +210,4 @@ bindsym $mod+Ctrl+Left move workspace to output left
 
 exec redshift -P -O 2700
 exec_always feh --bg-scale ~/.config/i3/wallpaper.jpeg
+exec compton
