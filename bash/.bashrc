@@ -124,6 +124,7 @@ alias find='fdfind'
 alias grep='rg'
 
 bind -x '"\C-f" : source ~/.local/scripts/directory-fzf'
+bind -x '"\C-r" : history | fzf'
 
 export PATH="$PATH:/opt/mssql-tools18/bin"
 export DOTNET_ROOT=/usr/share/dotnet
