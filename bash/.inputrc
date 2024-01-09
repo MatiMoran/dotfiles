@@ -5,3 +5,4 @@ set completion-ignore-case on
 set completion-display-width 0
 set show-all-if-ambiguous on
 set editing-mode vi
+set enable-bracketed-paste on

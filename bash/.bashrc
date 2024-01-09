@@ -127,9 +127,14 @@ export DOTNET_ROOT=/usr/share/dotnet
 source ~/.config/bash/fzf/key-bindings.bash
 source ~/.config/bash/fzf/completion.bash
 
+shopt -s autocd
+
 alias find='fdfind'
 alias grep='rg'
+alias ..="cd .."
+alias vim="nvim"
 
 bind -x '"\C-f" : source ~/.local/scripts/directory-fzf'
 bind -x '"\C-l" : clear'
 
+export PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\w\[\033[00m\]\$ '
