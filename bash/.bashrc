@@ -88,9 +88,6 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -ahlF'
-alias la='ls -A'
-alias l='ls -CF'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -127,14 +124,50 @@ export DOTNET_ROOT=/usr/share/dotnet
 source ~/.config/bash/fzf/key-bindings.bash
 source ~/.config/bash/fzf/completion.bash
 
+### ARCHIVE EXTRACTION
+# usage: ex <file>
+ex ()
+{
+  if [ -f "$1" ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1   ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *.deb)       ar x $1      ;;
+      *.tar.xz)    tar xf $1    ;;
+      *.tar.zst)   unzstd $1    ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
 shopt -s autocd
+shopt -s cdspell
+shopt -s histappend
 
 alias find='fdfind'
 alias grep='rg'
+alias vim='nvim'
+
+alias ll='ls -hlF --group-directories-first'
+alias lla='ls -ahlF --group-directories-first'
+alias free='free -m'
 alias ..="cd .."
-alias vim="nvim"
+alias cp="cp -i"
+alias mkdir="mkdir -pv"
 
 bind -x '"\C-f" : source ~/.local/scripts/directory-fzf'
 bind -x '"\C-l" : clear'
 
 export PS1='${debian_chroot:+($debian_chroot)}\[\033[01;31m\]\w\[\033[00m\]\$ '
+
