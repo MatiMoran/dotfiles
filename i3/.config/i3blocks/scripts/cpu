@@ -15,9 +15,9 @@ PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:${PATH}"
 ###
 ### Custom Defines
 ###
-appname="memory"
+appname="cpu"
 #time="${BLOCK_INSTANCE:-%H:%M}"
-format=" {used}{uunit} iB used"
+format=" {speed} {uspeed} ({percent}%)"
 
 
 ###
@@ -54,44 +54,39 @@ arg_desc_long=(
 
 # bash variable names
 format_vars=(
-	used
-	free
-	total
-	pused
-	pfree
-	uunit
-	funit
-	tunit
+	"speed"
+	"uspeed"
+	"percent"
+	"usage5"
+	"usage10"
+	"usage15"
 )
 
 # Format placeholders
 format_nodes=(
-	"{used}"
-	"{free}"
-	"{total}"
-	"{pused}"
-	"{pfree}"
-	"{uunit}"
-	"{funit}"
-	"{tunit}"
+	"{speed}"
+	"{uspeed}"
+	"{percent}"
+	"{usage5}"
+	"{usage10}"
+	"{usage15}"
 )
 
 # Format description (for help display)
 format_descs=(
-	"Used memory"
-	"Free memory"
-	"Total memory"
-	"Percent of used memory"
-	"Percent of free memory"
-	"Unit of used memory (K, M, G...)"
-	"Unit of free memory (K, M, G...)"
-	"Unit of total memory (K, M, G...)"
+	"Current CPU speed"
+	"Unit of urrent CPU speed (e.g.: 'GHz')"
+	"Current cpu usage in percent"
+	"Load avg last 5min"
+	"Load avg last 10min"
+	"Load avg last 15min"
 )
 
 # Format examples (for help display)
 format_examples=(
-	"-f \" {used} {punit}\""
-	"-f \"RAM: {used} {punit} of {total} {tunit} ({pused}%)\""
+	"-f \" {speed} {uspeed} ({percent}%)\""
+	"-f \" {usage5}\""
+	"-f \" {usage15}\""
 )
 
 
@@ -103,17 +98,31 @@ format_examples=(
 ### Evaluate disk space
 ###
 custom_action() {
-	local _dump
-	_dump="$( free | grep 'Mem' || true )"
+	local _cpufreq
+	local _percent
+	local _usage
 
-	total="$( echo "${_dump}" | awk '{printf("%.2f\n", $2/(1024*1024))}' )"
-	free="$(  echo "${_dump}" | awk '{printf("%.2f\n", $7/(1024*1024))}' )"
-	used="$(  awk -v total="${total}" -v free="${free}" 'BEGIN {printf("%.2f\n", total-free)}' )"
-	pused="$( awk -v total="${total}" -v used="${used}" 'BEGIN {printf("%0.f\n", 100*used/total)}' )"
-	pfree="$( awk -v total="${total}" -v free="${free}" 'BEGIN {printf("%0.f\n", 100*free/total)}' )"
-	uunit="G"
-	funit="G"
-	tunit="G"
+	if ! command -v cpufreq-info >/dev/null 2>&1; then
+		echo "Error, cpufreq-info binary not found, but required"
+		exit 1
+	fi
+
+	_cpufreq="$( cpufreq-info -fm )"
+	_percent="$( awk -v a="$(awk '/cpu /{print $2+$4,$2+$4+$5}' /proc/stat; sleep 1)" '/cpu /{split(a,b," "); print 100*($2+$4-b[1])/($2+$4+$5-b[2])}'  /proc/stat )"
+	_usage="$( uptime  | sed 's/.*:\s*//g' )"
+
+	speed="$( echo "${_cpufreq}" | grep -oE '[.0-9]+' || true )"
+	uspeed="${_cpufreq//*[[:space:]]/}"
+	percent="$( LC_ALL=C printf "%02.*f\\n" "0" "${_percent}" )"
+	usage5="$(  echo "${_usage}" | awk '{print $1}' | sed 's/,//g' )"
+	usage10="$( echo "${_usage}" | awk '{print $2}' | sed 's/,//g' )"
+	usage15="$( echo "${_usage}" | awk '{print $3}' | sed 's/,//g' )"
+
+	if [ "${uspeed}" = "MHz" ]; then
+		uspeed="GHz"
+		speed="$( awk -v mhz="${speed}" 'BEGIN{ printf("%.2f", mhz / 1000) }' )"
+	fi
+
 }
 
 

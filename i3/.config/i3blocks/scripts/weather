@@ -15,9 +15,9 @@ PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:${PATH}"
 ###
 ### Custom Defines
 ###
-appname="memory"
-#time="${BLOCK_INSTANCE:-%H:%M}"
-format=" {used}{uunit} iB used"
+appname="weather"
+city="${BLOCK_INSTANCE:-}"
+format="{icon_weather} {celsius} °C"
 
 
 ###
@@ -39,12 +39,16 @@ force_good=0
 ### Additional arguments
 ###
 arg_params=(
+	"-c"
 )
 arg_vars=(
+	"city"
 )
 arg_desc_val=(
+	"<city>"
 )
 arg_desc_long=(
+	"Specify the city to get the temperature from. This can also be set via i3blocks 'instance=' value."
 )
 
 
@@ -54,44 +58,41 @@ arg_desc_long=(
 
 # bash variable names
 format_vars=(
-	used
-	free
-	total
-	pused
-	pfree
-	uunit
-	funit
-	tunit
+	celsius
+	fahrenheit
+	wind_speed_kmh
+	wind_speed_mph
+	icon_weather
+	icon_wind_speed
+	icon_wind_direction
 )
 
 # Format placeholders
 format_nodes=(
-	"{used}"
-	"{free}"
-	"{total}"
-	"{pused}"
-	"{pfree}"
-	"{uunit}"
-	"{funit}"
-	"{tunit}"
+	"{celsius}"
+	"{fahrenheit}"
+	"{wind_speed_kmh}"
+	"{wind_speed_mph}"
+	"{icon_weather}"
+	"{icon_wind_speed}"
+	"{icon_wind_direction}"
 )
 
 # Format description (for help display)
 format_descs=(
-	"Used memory"
-	"Free memory"
-	"Total memory"
-	"Percent of used memory"
-	"Percent of free memory"
-	"Unit of used memory (K, M, G...)"
-	"Unit of free memory (K, M, G...)"
-	"Unit of total memory (K, M, G...)"
+	"Temperature in celsius"
+	"Temperature in fahrenheit"
+	"Wind speed in km per hour"
+	"Wind speed in miles per hour"
+	"Icon for weather: cloud, snow, etc"
+	"Icon for wind speed"
+	"Icon for wind direction"
 )
 
 # Format examples (for help display)
 format_examples=(
-	"-f \" {used} {punit}\""
-	"-f \"RAM: {used} {punit} of {total} {tunit} ({pused}%)\""
+	"-f \"{celsius} °C\""
+	"-f \"{fahrenheit} °F\""
 )
 
 
@@ -103,17 +104,103 @@ format_examples=(
 ### Evaluate disk space
 ###
 custom_action() {
-	local _dump
-	_dump="$( free | grep 'Mem' || true )"
+	local cache="${HOME}/.cache/i3blocks-modules/"
+	local file="${cache}/${appname}.${city}.cache"
 
-	total="$( echo "${_dump}" | awk '{printf("%.2f\n", $2/(1024*1024))}' )"
-	free="$(  echo "${_dump}" | awk '{printf("%.2f\n", $7/(1024*1024))}' )"
-	used="$(  awk -v total="${total}" -v free="${free}" 'BEGIN {printf("%.2f\n", total-free)}' )"
-	pused="$( awk -v total="${total}" -v used="${used}" 'BEGIN {printf("%0.f\n", 100*used/total)}' )"
-	pfree="$( awk -v total="${total}" -v free="${free}" 'BEGIN {printf("%0.f\n", 100*free/total)}' )"
-	uunit="G"
-	funit="G"
-	tunit="G"
+	if ! command -v curl > /dev/null 2>&1; then
+		echo "Error, curl is required for this module."
+	fi
+
+	# Caching directory for offline price
+	if [ ! -d "${cache}" ]; then
+		mkdir "${cache}"
+	fi
+
+	###
+	### wttr.in
+	###
+	url_icon="wttr.in/${city}?format=2"
+	url_data="wttr.in/${city}?format=j1"
+	succ=1
+
+	# Get icons
+	if ! raw_icon="$( curl -sS --fail "${url_icon}")"; then
+		succ=0
+	else
+		icon_weather="$( echo "${raw_icon}" | awk '{print $1}' )"
+		icon_wind_speed="$( echo "${raw_icon}" | awk '{print $3}' | grep -Eo '^.{1}' )"
+		icon_wind_direction="$( echo "${raw_icon}" | awk '{print $3}' | rev | grep -Eo '[0-9].*$' | sed 's/[0-9]*//g' | grep -Eo '^.{1}' )"
+	fi
+
+	# Get data
+	if ! raw_data="$( curl -sS --fail "${url_data}" )"; then
+		succ=0
+	else
+		if ! echo "${raw_data}" | grep '"current_condition":' >/dev/null; then
+			succ=0
+		else
+			celsius="$( echo "${raw_data}" \
+				| grep temp_C \
+				| head -1 \
+				| awk -F':' '{print $2}' \
+				| grep -Eo '\-?[0-9]+'
+			)"
+			fahrenheit="$( echo "${raw_data}" \
+				| grep temp_F \
+				| head -1 \
+				| awk -F':' '{print $2}' \
+				| grep -Eo '\-?[0-9]+'
+			)"
+			wind_speed_kmh="$( echo "${raw_data}" \
+				| grep windspeedKmph \
+				| head -1 \
+				| awk -F':' '{print $2}' \
+				| grep -Eo '[0-9]+'
+			)"
+			wind_speed_mph="$( echo "${raw_data}" \
+				| grep windspeedMiles \
+				| head -1 \
+				| awk -F':' '{print $2}' \
+				| grep -Eo '[0-9]+'
+			)"
+		fi
+	fi
+	if [ "${succ}" -eq "1" ]; then
+		# Cache results
+		printf "%s %s %s %s %s %s %s\\n" \
+			"${celsius}" \
+			"${fahrenheit}" \
+			"${wind_speed_kmh}" \
+			"${wind_speed_mph}" \
+			"${icon_weather}" \
+			"${icon_wind_speed}" \
+			"${icon_wind_direction}" \
+			> "${file}"
+	else
+		if [ -f "${file}" ]; then
+			raw="$( cat "${file}" )"
+			celsius="$( echo "${raw}" | head -1 | awk '{print $1}' )"
+			fahrenheit="$( echo "${raw}" | head -1 | awk '{print $2}' )"
+			wind_speed_kmh="$( echo "${raw}" | head -1 | awk '{print $3}' )"
+			wind_speed_mph="$( echo "${raw}" | head -1 | awk '{print $4}' )"
+			icon_weather="$( echo "${raw}" | head -1 | awk '{print $5}' )"
+			icon_wind_speed="$( echo "${raw}" | head -1 | awk '{print $6}' )"
+			icon_wind_direction="$( echo "${raw}" | head -1 | awk '{print $7}' )"
+
+			format="[cache] ${format}"
+			force_warn=1
+		else
+			celsius="???"
+			fahrenheit="???"
+			wind_speed_kmh="???"
+			wind_speed_mph="???"
+			icon_weather="???"
+			icon_wind_speed="???"
+			icon_wind_direction="???"
+
+			force_crit=1
+		fi
+	fi
 }
 
 
@@ -416,7 +503,7 @@ get_status_color() {
 		if [ "${tg_sign[$i]}" = "=" ] || [ "${tg_sign[$i]}" = "!=" ]; then
 			pval="${!tg_placeholder[$i]}"
 		else
-			pval="$( echo "${!tg_placeholder[$i]}" | grep -oE '[0-9]*' | head -1 )"
+			pval="$( echo "${!tg_placeholder[$i]}" | grep -oE '\-?[0-9]*' | head -1 )"
 		fi
 
 		if [ "${tg_sign[$i]}" = "<" ]; then
@@ -443,7 +530,7 @@ get_status_color() {
 		if [ "${ti_sign[$i]}" = "=" ] || [ "${ti_sign[$i]}" = "!=" ]; then
 			pval="${!ti_placeholder[$i]}"
 		else
-			pval="$( echo "${!ti_placeholder[$i]}" | grep -oE '[0-9]*' | head -1 )"
+			pval="$( echo "${!ti_placeholder[$i]}" | grep -oE '\-?[0-9]*' | head -1 )"
 		fi
 
 		if [ "${ti_sign[$i]}" = "<" ]; then
@@ -470,7 +557,7 @@ get_status_color() {
 		if [ "${tw_sign[$i]}" = "=" ] || [ "${tw_sign[$i]}" = "!=" ]; then
 			pval="${!tw_placeholder[$i]}"
 		else
-			pval="$( echo "${!tw_placeholder[$i]}" | grep -oE '[0-9]*' | head -1 )"
+			pval="$( echo "${!tw_placeholder[$i]}" | grep -oE '\-?[0-9]*' | head -1 )"
 		fi
 
 		if [ "${tw_sign[$i]}" = "<" ]; then
@@ -499,7 +586,7 @@ get_status_color() {
 		if [ "${tc_sign[$i]}" = "=" ] || [ "${tc_sign[$i]}" = "!=" ]; then
 			pval="${!tc_placeholder[$i]}"
 		else
-			pval="$( echo "${!tc_placeholder[$i]}" | grep -oE '[0-9]*' | head -1 )"
+			pval="$( echo "${!tc_placeholder[$i]}" | grep -oE '\-?[0-9]*' | head -1 )"
 		fi
 
 		if [ "${tc_sign[$i]}" = "<" ]; then
@@ -563,7 +650,7 @@ replace_placeholders() {
 	done
 
 
-
+	#echo "${_format}"
 	# Replace placeholders in $format
 	for (( i=0; i < ${#format_nodes[@]}; i++ )); do
 		_search="${format_nodes[$i]}"

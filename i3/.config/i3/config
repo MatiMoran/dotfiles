@@ -172,22 +172,37 @@ bindsym $mod+r mode "resize"
 
 # i3bar
 bar {
-    tray_output primary
-    tray_padding 4
-    font pango:MesloLGS NF 12
-    separator_symbol " "
-    strip_workspace_numbers yes
     status_command i3blocks
-    colors {
-      background #2e3440
-      statusline #d8dee9
-      separator #8FBCBB
+    tray_output primary
+    tray_padding 0
+    font pango:MesloLGM Nerd Font Mono 14
+    separator_symbol " "
 
-      focused_workspace  #2e3440 #2e3440 #81A1C1
-      active_workspace   #2e3440 #2e3440 #8FBCBB
-      inactive_workspace #2e3440 #2e3440 #4c566a
-      urgent_workspace   #2e3440 #2e3440 #BF616A
-      binding_mode       #2e3440 #2e3440 #BF616A
+    bindsym button4 nop
+    bindsym button5 nop
+    workspace_min_width 20
+    #padding 2px 6px 4px 1px
+
+    colors {
+      background #2e2e2e
+      statusline #d8dee9
+      separator #FFBCBB
+
+      #focused_workspace  #2e3440 #2e3440 #81A1C1
+      #active_workspace   #2e3440 #2e3440 #8FBCBB
+      #inactive_workspace #2e3440 #2e3440 #4c566a
+      #urgent_workspace   #2e3440 #2e3440 #BF616A
+      #binding_mode       #2e3440 #2e3440 #BF616A
+
+      #background #000000
+      #statusline #ffffff
+      #separator #666666
+
+      focused_workspace  #4c7899 #772828 #ffffff
+      active_workspace   #333333 #5f676a #ffffff
+      inactive_workspace #333333 #222222 #888888
+      urgent_workspace   #2f343a #900000 #ffffff
+      binding_mode       #2f343a #900000 #ffffff
     }
 }
 

@@ -15,9 +15,8 @@ PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:${PATH}"
 ###
 ### Custom Defines
 ###
-appname="memory"
-#time="${BLOCK_INSTANCE:-%H:%M}"
-format=" {used}{uunit} iB used"
+appname="volume"
+format=" {volume}%"
 
 
 ###
@@ -39,14 +38,21 @@ force_good=0
 ### Additional arguments
 ###
 arg_params=(
+	-id
+	-im
 )
 arg_vars=(
+	icon_default
+	icon_mute
 )
 arg_desc_val=(
+	"<char>"
+	"<char>"
 )
 arg_desc_long=(
+	"Set default {icon} placeholder"
+	"Set muted {icon} placeholder"
 )
-
 
 ###
 ### Format placeholders
@@ -54,44 +60,62 @@ arg_desc_long=(
 
 # bash variable names
 format_vars=(
-	used
-	free
-	total
-	pused
-	pfree
-	uunit
-	funit
-	tunit
+	volume
+	muted
+	port
+	dev_api
+	dev_bus
+	dev_form_factor
+	dev_profile
+	dev_icon_name
+	dev_description
+	alsa_name
+	alsa_card
+	alsa_driver
+	alsa_mixer
+	icon
 )
 
 # Format placeholders
 format_nodes=(
-	"{used}"
-	"{free}"
-	"{total}"
-	"{pused}"
-	"{pfree}"
-	"{uunit}"
-	"{funit}"
-	"{tunit}"
+	"{volume}"
+	"{muted}"
+	"{port}"
+	"{dev_api}"
+	"{dev_bus}"
+	"{dev_form_factor}"
+	"{dev_profile}"
+	"{dev_icon_name}"
+	"{dev_description}"
+	"{alsa_name}"
+	"{alsa_card}"
+	"{alsa_driver}"
+	"{alsa_mixer}"
+	"{icon}"
 )
 
 # Format description (for help display)
 format_descs=(
-	"Used memory"
-	"Free memory"
-	"Total memory"
-	"Percent of used memory"
-	"Percent of free memory"
-	"Unit of used memory (K, M, G...)"
-	"Unit of free memory (K, M, G...)"
-	"Unit of total memory (K, M, G...)"
+	"{volume}"
+	"{muted}"
+	"{port}"
+	"{dev_api}"
+	"{dev_bus}"
+	"{dev_form_factor}"
+	"{dev_profile}"
+	"{dev_icon_name}"
+	"{dev_description}"
+	"{alsa_name}"
+	"{alsa_card}"
+	"{alsa_driver}"
+	"{alsa_mixer}"
+	"{icon}"
 )
 
 # Format examples (for help display)
 format_examples=(
-	"-f \" {used} {punit}\""
-	"-f \"RAM: {used} {punit} of {total} {tunit} ({pused}%)\""
+	"-f \" {volume}%\""
+	"-f \" {volume}% ({muted})\""
 )
 
 
@@ -103,17 +127,75 @@ format_examples=(
 ### Evaluate disk space
 ###
 custom_action() {
-	local _dump
-	_dump="$( free | grep 'Mem' || true )"
+	if ! command -v pactl > /dev/null 2>&1; then
+		echo "Binary pactl not found, but required."
+		exit 1
+	fi
 
-	total="$( echo "${_dump}" | awk '{printf("%.2f\n", $2/(1024*1024))}' )"
-	free="$(  echo "${_dump}" | awk '{printf("%.2f\n", $7/(1024*1024))}' )"
-	used="$(  awk -v total="${total}" -v free="${free}" 'BEGIN {printf("%.2f\n", total-free)}' )"
-	pused="$( awk -v total="${total}" -v used="${used}" 'BEGIN {printf("%0.f\n", 100*used/total)}' )"
-	pfree="$( awk -v total="${total}" -v free="${free}" 'BEGIN {printf("%0.f\n", 100*free/total)}' )"
-	uunit="G"
-	funit="G"
-	tunit="G"
+	###
+	### Get active sinkd
+	###
+	local sinks=()
+	local i=
+	local active=
+	local output=""
+
+	#Set the field separator to new line
+	IFS=$'\n'
+	for line in $( pactl list sinks ); do
+		# This line indicates a new sink
+		if [[ "${line}" =~ ^Sink[[:space:]]#[0-9]+$ ]]; then
+			if [ "${i}" = "" ]; then
+				# Initialize counter for first sync
+				i=0
+			else
+				# Increment sync counter
+				i=$(( i + 1 ))
+			fi
+		fi
+		# If i was initialized
+		if [ "${i}" != "" ]; then
+			sinks[${i}]="${sinks[${i}]}\\n${line}"
+
+			# Set active sink
+			if [[ "${line}" =~  State:[[:space:]]RUNNING ]]; then
+				active="${i}"
+			fi
+		fi
+	done
+
+	###
+	### Get active
+	###
+	output="$( echo -e "${sinks[${active}]}" )"
+
+	###
+	### Get global variables
+	###
+	volume="$( echo "${output}" | grep '^[[:space:]]*Volume:' | grep -oE '[0-9]+%' | head -1 | grep -oE '[0-9]+' || true )"
+	muted="$( echo "${output}" | grep '^[[:space:]]*Mute:' | sed 's/^.*:\s//g' )"
+	port="$( echo "${output}" | grep 'Active Port:' | sed 's/.*:\s*//g' )"
+
+	dev_api="$( echo "${output}" | grep 'device.api[[:space:]]' | grep -oE '".*"' | sed 's/"//g' )"
+	dev_bus="$( echo "${output}" | grep 'device.bus[[:space:]]' | grep -oE '".*"' | sed 's/"//g' )"
+	dev_form_factor="$( echo "${output}" | grep 'device.form_factor[[:space:]]' | grep -oE '".*"' | sed 's/"//g' )"
+	dev_profile="$( echo "${output}" | grep 'device.profile.name[[:space:]]' | grep -oE '".*"' | sed 's/"//g' )"
+	dev_icon_name="$( echo "${output}" | grep 'device.icon_name[[:space:]]' | grep -oE '".*"' | sed 's/"//g' )"
+	dev_description="$( echo "${output}" | grep 'device.description[[:space:]]' | grep -oE '".*"' | sed 's/"//g' )"
+
+	alsa_name="$( echo "${output}" | grep 'alsa.name[[:space:]]' | grep -oE '".*"' | sed 's/"//g' )"
+	alsa_card="$( echo "${output}" | grep 'alsa.card_name[[:space:]]' | grep -oE '".*"' | sed 's/"//g' )"
+	alsa_driver="$( echo "${output}" | grep 'alsa.driver_name[[:space:]]' | grep -oE '".*"' | sed 's/"//g' )"
+	alsa_mixer="$( echo "${output}" | grep 'alsa.mixer_name[[:space:]]' | grep -oE '".*"' | sed 's/"//g' )"
+
+
+	if [ "${muted}" = "yes" ]; then
+		# shellcheck disable=SC2154
+		icon="${icon_mute}"
+	else
+		# shellcheck disable=SC2154
+		icon="${icon_default}"
+	fi
 }
 
 

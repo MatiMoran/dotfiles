@@ -15,9 +15,9 @@ PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:${PATH}"
 ###
 ### Custom Defines
 ###
-appname="memory"
-#time="${BLOCK_INSTANCE:-%H:%M}"
-format=" {used}{uunit} iB used"
+appname="disk"
+directory="${BLOCK_INSTANCE:-/}"
+format=" {free} {funit}iB free"
 
 
 ###
@@ -39,12 +39,16 @@ force_good=0
 ### Additional arguments
 ###
 arg_params=(
+	"-d"
 )
 arg_vars=(
+	"directory"
 )
 arg_desc_val=(
+	"<disk>"
 )
 arg_desc_long=(
+	"Specify the disk being used. This can also be set via i3blocks 'instance=' value. If neither is set, it will default to '/'."
 )
 
 
@@ -54,9 +58,9 @@ arg_desc_long=(
 
 # bash variable names
 format_vars=(
+	total
 	used
 	free
-	total
 	pused
 	pfree
 	uunit
@@ -66,9 +70,9 @@ format_vars=(
 
 # Format placeholders
 format_nodes=(
+	"{total}"
 	"{used}"
 	"{free}"
-	"{total}"
 	"{pused}"
 	"{pfree}"
 	"{uunit}"
@@ -78,20 +82,20 @@ format_nodes=(
 
 # Format description (for help display)
 format_descs=(
-	"Used memory"
-	"Free memory"
-	"Total memory"
-	"Percent of used memory"
-	"Percent of free memory"
-	"Unit of used memory (K, M, G...)"
-	"Unit of free memory (K, M, G...)"
-	"Unit of total memory (K, M, G...)"
+	"Total space"
+	"Used space"
+	"Free space"
+	"Percentage of used space"
+	"Percentage of free space"
+	"Used sace unit"
+	"Free space unit"
+	"Total space unit"
 )
 
 # Format examples (for help display)
 format_examples=(
-	"-f \" {used} {punit}\""
-	"-f \"RAM: {used} {punit} of {total} {tunit} ({pused}%)\""
+	"-f \" {free} {funit} ({pfree}%)\""
+	"-f \" {used} {uunit} / {total} {tunit}\""
 )
 
 
@@ -103,17 +107,18 @@ format_examples=(
 ### Evaluate disk space
 ###
 custom_action() {
-	local _dump
-	_dump="$( free | grep 'Mem' || true )"
+	output="$( df -h -P -l "${directory}" | tail -1 )"
 
-	total="$( echo "${_dump}" | awk '{printf("%.2f\n", $2/(1024*1024))}' )"
-	free="$(  echo "${_dump}" | awk '{printf("%.2f\n", $7/(1024*1024))}' )"
-	used="$(  awk -v total="${total}" -v free="${free}" 'BEGIN {printf("%.2f\n", total-free)}' )"
-	pused="$( awk -v total="${total}" -v used="${used}" 'BEGIN {printf("%0.f\n", 100*used/total)}' )"
-	pfree="$( awk -v total="${total}" -v free="${free}" 'BEGIN {printf("%0.f\n", 100*free/total)}' )"
-	uunit="G"
-	funit="G"
-	tunit="G"
+	total="$( echo "${output}" | awk '{ print $2}' | grep -o '[.0-9]*' || true )"
+	used="$( echo "${output}"  | awk '{ print $3}' | grep -o '[.0-9]*' || true )"
+	free="$( echo "${output}"  | awk '{ print $4}' | grep -o '[.0-9]*' || true )"
+
+	tunit="$( echo "${output}" | awk '{ print $2}' | sed 's/[.0-9]//g' )"
+	uunit="$( echo "${output}" | awk '{ print $3}' | sed 's/[.0-9]//g' )"
+	funit="$( echo "${output}" | awk '{ print $4}' | sed 's/[.0-9]//g' )"
+
+	pused="$( echo "${output}" | awk '{ print $5}' | sed 's/%//g' )"
+	pfree="$(( 100 - pused ))"
 }
 
 
@@ -138,7 +143,7 @@ custom_action() {
 ###
 ### General default values
 ###
-color_def="#666666"		# gray
+color_def="#ffffff"		# gray
 color_good="#88b090"	# green
 color_warn="#ccdc90"	# yellow
 color_crit="#e89393"	# red
@@ -1038,7 +1043,7 @@ format="$( replace_placeholders "${format}" )"
 ###
 if [ "${pango}" = "1" ]; then
 	if [ "${format}" != "" ]; then
-		echo "<span color=\"${color}\">${format}</span>"
+		echo "${format}"
 	fi
 else
 	echo "${format}"	# Long output
