@@ -4,7 +4,8 @@ markup=pango
 interval=30
 
 [volume-pulseaudio]
-command=$HOME/.config/i3blocks/scripts/volume-pulseaudio
+command=$HOME/.config/i3blocks/scripts/volume
+command=~/.config/i3blocks/scripts/pango "" "" "$(~/.config/i3blocks/scripts/volume -f '{volume}%')" "" "#2e2e2e" "#81A1C1" "#5e81ac"
 markup=pango
 interval=1
 
