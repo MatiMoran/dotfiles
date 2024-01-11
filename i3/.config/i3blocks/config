@@ -9,20 +9,24 @@ markup=pango
 interval=1
 
 [cpu]
-command=$HOME/.config/i3blocks/scripts/cpu
-interval=1
+command=~/.config/i3blocks/scripts/pango "" "" "$(~/.config/i3blocks/scripts/cpu -f '{speed} {uspeed} ({percent}%)')" " " "#8fbcbb" "#2e2e2e" "#2e2e2e"
 markup=pango
+interval=1
 
 [memory]
-command=$HOME/.config/i3blocks/scripts/memory2
+command=~/.config/i3blocks/scripts/pango "" "" "$(~/.config/i3blocks/scripts/memory -f '{used}/{total} {uunit}B')" "" "#2e2e2e" "#81A1C1" "#5e81ac"
 interval=1
 markup=pango
 
 [date]
-#command=echo "<span foreground='#81A1C1' size='x-large'></span> <span size='small' rise='2pt'>$(date +"%Y-%m-%d")</span>"; 
-command=~/.config/i3blocks/scripts/pango "" "" "$(date +"%Y-%m-%d")" "" "#2e2e2e" "#81A1C1" "#5e81ac"
+command=~/.config/i3blocks/scripts/pango "" "" "$(date +"%Y-%m-%d")" " " "#5e81ac" "#2e2e2e" "#2e2e2e"
 markup=pango
 interval=1
+
+[weather]
+command=~/.config/i3blocks/scripts/pango "" "" "$(~/.config/i3blocks/scripts/weather)" "" "#2e2e2e" "#81A1C1" "#5e81ac"
+markup=pango
+interval=60
 
 [time]
 command=~/.config/i3blocks/scripts/pango "" "" "$(date +"%H:%M:%S")" " " "#5e81ac" "#2e2e2e" "#2e2e2e"
