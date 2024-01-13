@@ -136,10 +136,8 @@ mode "exit: (l)ogout (r)eboot (s)hutdown suspen(d) loc(k)" {
   bindsym Return mode "default"
   bindsym $mod+x mode "default"
 }
-
 bindsym $mod+x mode "exit: (l)ogout (r)eboot (s)hutdown suspen(d) loc(k)"
 
-# resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
 
@@ -163,14 +161,8 @@ mode "resize" {
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
 }
-
 bindsym $mod+r mode "resize"
 
-#bar {
-#        status_command i3status
-#}
-
-# i3bar
 bar {
     status_command i3blocks
     tray_output primary
@@ -186,7 +178,7 @@ bar {
       background #2e2e2e
       separator #2e2e2e
 
-      focused_workspace  #ff0000 #bc3f13 #ffffff
+      focused_workspace  #ff0000 #900000 #ffffff
       active_workspace   #333333 #5f676a #ffffff
       inactive_workspace #333333 #222222 #888888
       urgent_workspace   #2f343a #900000 #ffffff
