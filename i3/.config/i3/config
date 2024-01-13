@@ -176,7 +176,6 @@ bar {
     tray_output primary
     tray_padding 0
     font pango:MesloLGM Nerd Font Mono 14
-    separator_symbol " "
 
     bindsym button4 nop
     bindsym button5 nop

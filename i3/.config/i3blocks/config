@@ -1,26 +1,6 @@
-[disk]
-command=~/.config/i3blocks/scripts/pango "" "" "$(~/.config/i3blocks/scripts/disk -f '{used}/{total} {uunit}B' -tc '{pfree}' '<' 20 -tc '{pfree}' '<' 10)" " " "#8fbcbb" "#2e2e2e" "#2e2e2e"
-markup=pango
-interval=30
-
 [volume-pulseaudio]
 command=$HOME/.config/i3blocks/scripts/volume
-command=~/.config/i3blocks/scripts/pango "" "" "$(~/.config/i3blocks/scripts/volume -f '{volume}%')" "" "#2e2e2e" "#81A1C1" "#5e81ac"
-markup=pango
-interval=1
-
-[cpu]
-command=~/.config/i3blocks/scripts/pango "" "" "$(~/.config/i3blocks/scripts/cpu -f '{speed} {uspeed} ({percent}%)')" " " "#8fbcbb" "#2e2e2e" "#2e2e2e"
-markup=pango
-interval=1
-
-[memory]
-command=~/.config/i3blocks/scripts/pango "" "" "$(~/.config/i3blocks/scripts/memory -f '{used}/{total} {uunit}B')" "" "#2e2e2e" "#81A1C1" "#5e81ac"
-interval=1
-markup=pango
-
-[date]
-command=~/.config/i3blocks/scripts/pango "" "" "$(date +"%Y-%m-%d")" " " "#5e81ac" "#2e2e2e" "#2e2e2e"
+command=~/.config/i3blocks/scripts/pango "" "  " "$(~/.config/i3blocks/scripts/volume -f '{volume}%')" " " "#8fbcbb" "#2e2e2e" "#2e2e2e"
 markup=pango
 interval=1
 
@@ -29,7 +9,27 @@ command=~/.config/i3blocks/scripts/pango "" "" "$(~/.config/i3blocks/scripts/wea
 markup=pango
 interval=60
 
+[disk]
+command=~/.config/i3blocks/scripts/pango "" "  " "$(~/.config/i3blocks/scripts/disk -f '{used}/{total} {uunit}B' -tc '{pfree}' '<' 20 -tc '{pfree}' '<' 10)" " " "#8fbcbb" "#2e2e2e" "#2e2e2e"
+markup=pango
+interval=30
+
+[memory]
+command=~/.config/i3blocks/scripts/pango "" " " "$(~/.config/i3blocks/scripts/memory -f '{used}/{total} {uunit}B')" "" "#2e2e2e" "#81A1C1" "#5e81ac"
+interval=1
+markup=pango
+
+[cpu]
+command=~/.config/i3blocks/scripts/pango "" "  " "$(~/.config/i3blocks/scripts/cpu -f '{speed} {uspeed} ({percent}%)')" " " "#8fbcbb" "#2e2e2e" "#2e2e2e"
+markup=pango
+interval=1
+
+[date]
+command=~/.config/i3blocks/scripts/pango "" " " "$(date +"%Y-%m-%d")" "" "#2e2e2e" "#81A1C1" "#5e81ac"
+markup=pango
+interval=1
+
 [time]
-command=~/.config/i3blocks/scripts/pango "" "" "$(date +"%H:%M:%S")" " " "#5e81ac" "#2e2e2e" "#2e2e2e"
+command=~/.config/i3blocks/scripts/pango "" "  " "$(date +"%H:%M:%S")" " " "#5e81ac" "#2e2e2e" "#2e2e2e"
 markup=pango
 interval=1
