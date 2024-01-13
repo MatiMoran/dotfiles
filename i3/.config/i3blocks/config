@@ -1,4 +1,4 @@
-[volume-pulseaudio]
+[volume]
 command=$HOME/.config/i3blocks/scripts/volume
 command=~/.config/i3blocks/scripts/pango "" "  " "$(~/.config/i3blocks/scripts/volume -f '{volume}%')" " " "#ff931f" "#2e2e2e" "#2e2e2e" "#2e2e2e"
 markup=pango

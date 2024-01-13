@@ -175,7 +175,7 @@ bar {
     status_command i3blocks
     tray_output primary
     tray_padding 0
-    font pango:MesloLGM Nerd Font Mono 14
+    font pango:MesloLGM Nerd Font Mono 13
 
     bindsym button4 nop
     bindsym button5 nop
@@ -184,20 +184,9 @@ bar {
 
     colors {
       background #2e2e2e
-      statusline #d8dee9
       separator #2e2e2e
 
-      #focused_workspace  #2e3440 #2e3440 #81A1C1
-      #active_workspace   #2e3440 #2e3440 #8FBCBB
-      #inactive_workspace #2e3440 #2e3440 #4c566a
-      #urgent_workspace   #2e3440 #2e3440 #BF616A
-      #binding_mode       #2e3440 #2e3440 #BF616A
-
-      #background #000000
-      #statusline #ffffff
-      #separator #666666
-
-      focused_workspace  #4c7899 #772828 #ffffff
+      focused_workspace  #ff0000 #bc3f13 #ffffff
       active_workspace   #333333 #5f676a #ffffff
       inactive_workspace #333333 #222222 #888888
       urgent_workspace   #2f343a #900000 #ffffff
