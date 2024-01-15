@@ -25,7 +25,7 @@ markup=pango
 interval=1
 
 [date]
-command=~/.config/i3blocks/scripts/pango "" " " "$(date +"%Y-%m-%d")" "" "#2e2e2e" "#81A1C1" "#ffffff" "#fa5e1f"
+command=~/.config/i3blocks/scripts/pango "" " " "$(date +"%d-%m-%Y")" "" "#2e2e2e" "#81A1C1" "#ffffff" "#fa5e1f"
 markup=pango
 interval=1
 
