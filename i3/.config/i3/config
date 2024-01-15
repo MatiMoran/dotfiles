@@ -172,7 +172,7 @@ bar {
     bindsym button4 nop
     bindsym button5 nop
     workspace_min_width 20
-    #padding 2px 6px 4px 1px
+    padding 0px 20px 0px 10px
 
     colors {
       background #2e2e2e
