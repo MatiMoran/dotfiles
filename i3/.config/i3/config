@@ -167,7 +167,7 @@ bar {
     status_command i3blocks
     tray_output primary
     tray_padding 0
-    font pango:MesloLGM Nerd Font Mono 13
+    font pango:MesloLGM Nerd Font Mono 12
 
     bindsym button4 nop
     bindsym button5 nop
@@ -206,4 +206,4 @@ exec xrandr --output $m2 --right-of $m1
 
 exec redshift -P -O 2700
 exec compton -f -D 5
-exec_always feh --bg-scale ~/.config/i3/wallpaper.jpeg
+exec_always feh --bg-scale ~/.config/i3/wallpaper.jpeg  
