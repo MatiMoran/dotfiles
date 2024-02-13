@@ -23,6 +23,7 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86Tools exec --no-startup-id ~/.local/scripts/sink-toggler -n && $refresh_i3status
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -204,6 +205,8 @@ exec xrandr --output $m2 --right-of $m1
 # workspace $ws8 output $m2
 # workspace $ws10 output $m2
 
-exec redshift -P -O 2700
 exec compton -f -D 5
 exec_always feh --bg-scale ~/.config/i3/wallpaper.jpeg  
+exec_always redshift -P -O 2700
+exec pactl unload-module $(pactl list sinks | grep -A7 'Sink #' | grep -A5 'hdmi' | grep 'Owner Module' | awk '{print $NF}')
+
