@@ -1,5 +1,5 @@
 #!/bin/bash
-DIRECTORY=$(fdfind -H -d 1 . $REPOS | fzf)
+DIRECTORY=$(fdfind -H -d 1 . $(echo $REPOS) | fzf)
 ACTION=$(echo nvim code cd | tr " " "\n" | fzf)
 
 if [ "$ACTION" = "nvim" ]; then
