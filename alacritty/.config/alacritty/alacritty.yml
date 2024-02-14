@@ -76,8 +76,8 @@ colors:
 
 live_config_reload: true
 
-shell:
-  program: /bin/bash
+#shell:
+  #program: /bin/bash
 
 # Hints
 #
