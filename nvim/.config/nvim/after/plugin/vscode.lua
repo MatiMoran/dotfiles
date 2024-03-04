@@ -1,6 +1,8 @@
 -- Lua:
 -- For dark theme (neovim's default)
 vim.o.background = 'dark'
+-- For light theme
+-- vim.o.background = 'light'
 
 local c = require('vscode.colors').get_colors()
 require('vscode').setup({
@@ -12,6 +14,9 @@ require('vscode').setup({
 
     -- Enable italic comment
     italic_comments = true,
+
+    -- Underline `@markup.link.*` variants
+    underline_links = true,
 
     -- Disable nvim-tree background color
     disable_nvimtree_bg = true,
