@@ -2,7 +2,14 @@ HISTFILE=~/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
 
+export PATH="$PATH:$HOME/.dotnet/tools"
+export PATH="$PATH:/usr/local/go/bin"
+export PATH="$PATH:/opt/mssql-tools18/bin"
+export DOTNET_ROOT=/usr/share/dotnet
+export GOPATH="$HOME/go"
+export XDG_CONFIG_HOME=$HOME/.config
 export ZSH="$HOME/.oh-my-zsh"
+export REPOS="$HOME /mnt/A88277D98277AB08/BINIT/Repos/ /mnt/A88277D98277AB08/Personal/ /mnt/A88277D98277AB08/UBA/Algo2/Repos/ /mnt/A88277D98277AB08/UBA/Algo2/Repos/ /mnt/A88277D98277AB08/UBA/ALC/Repos/ /home/matias/.local" 
 
 ZSH_THEME="matias"
 
