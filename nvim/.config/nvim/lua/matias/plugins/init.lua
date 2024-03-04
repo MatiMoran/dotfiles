@@ -9,9 +9,9 @@ return {
           dependencies = { 'nvim-lua/plenary.nvim' }
       },
       'Mofiqul/vscode.nvim',
-      'ThePrimeagen/harpoon'
- --     'mbbill/undotree',
- --     'tpope/vim-fugitive',
+      'ThePrimeagen/harpoon',
+      'mbbill/undotree',
+      'tpope/vim-fugitive'
  --     'williamboman/mason.nvim',
  --     'williamboman/mason-lspconfig.nvim',
  --     'neovim/nvim-lspconfig',
