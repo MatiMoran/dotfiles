@@ -1,14 +1,14 @@
 return {
+      {
+          'nvim-treesitter/nvim-treesitter',
+          build = ':TSUpdate',
+      },
 	  'nvim-lua/plenary.nvim',
       {
           'nvim-telescope/telescope.nvim', tag = '0.1.5',
           dependencies = { 'nvim-lua/plenary.nvim' }
-      }
- --     'Mofiqul/vscode.nvim',
- --     {
- --         'nvim-treesitter/nvim-treesitter',
- --         build = ':TSUpdate',
- --     },
+      },
+      'Mofiqul/vscode.nvim'
  --     'ThePrimeagen/harpoon',
  --     'mbbill/undotree',
  --     'tpope/vim-fugitive',
