@@ -3,17 +3,8 @@ export BROWSER="firefox"
 export EDITOR="nvim"
 VIM="nvim"
 
-export PATH="$PATH:$HOME/.dotnet/tools"
-export PATH="$PATH:/usr/local/go/bin"
-export PATH="$PATH:/opt/mssql-tools18/bin"
-export REPOS="$HOME /mnt/A88277D98277AB08/BINIT/Repos/ /mnt/A88277D98277AB08/Personal/ /mnt/A88277D98277AB08/UBA/Algo2/Repos/ /mnt/A88277D98277AB08/UBA/Algo2/Repos/ /mnt/A88277D98277AB08/UBA/ALC/Repos/ /home/matias/.local" 
-export DOTNET_ROOT=/usr/share/dotnet
-export GOPATH="$HOME/go"
-export XDG_CONFIG_HOME=$HOME/.config
-
 LS_COLORS='rs=0:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:';
 export LS_COLORS
-
 
 source ~/.config/zsh/fzf/completion.zsh
 source ~/.config/zsh/fzf/key-bindings.zsh
