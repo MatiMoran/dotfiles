@@ -34,6 +34,10 @@ return {
                 builtin.grep_string({ search = vim.fn.input("Grep > ") });
             end)
 
+            keymaps.set("n", "<leader>pf", function()
+                builtin.find_files({ no_ignore = true });
+            end)
+
             keymaps.set("n", "<C-p>", function()
                 builtin.find_files({ no_ignore = true });
             end)
