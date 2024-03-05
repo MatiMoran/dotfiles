@@ -27,3 +27,7 @@ vim.opt.scrolloff = 16
 vim.opt.updatetime = 50
 
 vim.g.mapleader = " "
+
+-- disabled to nvim-tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1

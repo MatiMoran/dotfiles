@@ -18,7 +18,7 @@ return {
           api.config.mappings.default_on_attach(bufnr)
 
           -- custom mappings
-          --vim.keymap.set('n', '<C-t>', api.tree.to,        opts('Up'))
+          vim.keymap.set('n', "<leader>t", api.tree.toggle)
       end
 
       require("nvim-tree").setup {
