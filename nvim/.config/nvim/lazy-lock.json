@@ -1,6 +1,7 @@
 {
   "LuaSnip": { "branch": "master", "commit": "a7a4b4682c4b3e2ba82b82a4e6e5f5a0e79dec32" },
   "cmp-nvim-lsp": { "branch": "main", "commit": "5af77f54de1b16c34b23cba810150689a3a90312" },
+  "codeium.nvim": { "branch": "main", "commit": "cd5913ff5481229b15186293d1d46dd9500789f9" },
   "harpoon": { "branch": "master", "commit": "ccae1b9bec717ae284906b0bf83d720e59d12b91" },
   "lazy.nvim": { "branch": "main", "commit": "aedcd79811d491b60d0a6577a9c1701063c2a609" },
   "lsp-zero.nvim": { "branch": "v3.x", "commit": "e0f091c97cfaff81441ccfcda0a49f4504856057" },

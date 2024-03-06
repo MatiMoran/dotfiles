@@ -11,6 +11,22 @@ return {
             'L3MON4D3/LuaSnip',
         },
         config = function()
+
+            -- This is for adding support for codeium
+            local cmp = require('cmp')
+            local cmp_format = require('lsp-zero').cmp_format({details = true})
+
+            cmp.setup({
+                sources = {
+                    {name = 'codeium'},
+                    {name = 'nvim_lsp'},
+                },
+                --- (Optional) Show source name in completion menu
+                formatting = cmp_format,
+            })
+
+
+            -- This is the normal config of LSP
             local lsp_zero = require('lsp-zero')
 
             lsp_zero.on_attach(function(client, bufnr)
