@@ -1,2 +1,2 @@
 #!/bin/sh
-play -q ~/.config/dunst/hxh-ringtone.ogg
+paplay ~/.config/dunst/hxh-ringtone.ogg -d combined
