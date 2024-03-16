@@ -5,20 +5,20 @@ CURRENT_SINK=$(pacmd list-sinks | rg -e "index" | rg " \s+\*\sindex:\s\d" | awk 
 
 function setCard() {
 
-  if [ "$CURRENT_SINK" == "$1" ]
-   then
-     echo "Already using this Sink $CURRENT_SINK"
-     exit 1
-  fi
+    if [ "$CURRENT_SINK" == "$1" ]
+    then
+        echo "Already using this Sink $CURRENT_SINK"
+        exit 1
+    fi
 
-  pactl set-default-sink $1
+    pactl set-default-sink $1
 
 }
 
 function nextSink() {
-  if [ "$CURRENT_SINK" == "$MAX_SINK" ]
+    if [ "$CURRENT_SINK" == "$MAX_SINK" ]
     then
-      setCard 1
+        setCard 1
     else
         setCard $(echo "$CURRENT_SINK + 1" | bc)
     fi
@@ -26,50 +26,50 @@ function nextSink() {
 
 
 function showHelp() {
-  echo "------------------------------------"
-  echo "AUDIO SINK SWITCHER"
-  echo " "
-  echo "$0 [options]"
-  echo " "
-  echo "options:"
-  echo "-h  --help        What you are looking at.."
-  echo "-g, --gaming      Sets headset as output device"
-  echo "-s, --speakers    Sets Speakers as output device"
-  echo "-n, --next        Sets the next sink as output device"
-  echo " "
-  echo "------------------------------------"
+    echo "------------------------------------"
+    echo "AUDIO SINK SWITCHER"
+    echo " "
+    echo "$0 [options]"
+    echo " "
+    echo "options:"
+    echo "-h  --help        What you are looking at.."
+    echo "-g, --gaming      Sets headset as output device"
+    echo "-s, --speakers    Sets Speakers as output device"
+    echo "-n, --next        Sets the next sink as output device"
+    echo " "
+    echo "------------------------------------"
 }
 
 # check args length
 if [ $# -eq 0 ]
-  then
+then
     nextSink
 fi
 
 
 # arg options
 while test $# -gt 0; do
-  case "$1" in
-    -h|--help)
-        showHelp
-        exit 1
-        ;;
-    -g|--gaming)
-        setCard 1
-        exit 1
-        ;;
-    -s|--speakers)
-        setCard 2
-        exit 1
-        ;;
-    -n|--next)
-        nextSink
-        exit 1
-        ;;
-     *)
-        showHelp
-        exit 1
-        ;;
-  esac
+    case "$1" in
+        -h|--help)
+            showHelp
+            exit 1
+            ;;
+        -g|--gaming)
+            setCard 1
+            exit 1
+            ;;
+        -s|--speakers)
+            setCard 2
+            exit 1
+            ;;
+        -n|--next)
+            nextSink
+            exit 1
+            ;;
+        *)
+            showHelp
+            exit 1
+            ;;
+    esac
 done
 
