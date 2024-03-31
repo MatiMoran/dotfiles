@@ -1,2 +1,2 @@
 #!/bin/sh
-paplay ~/.config/dunst/hxh-ringtone.ogg --volume=150000 -d combined
+paplay ~/.config/dunst/hxh-ringtone.ogg  -d combined
