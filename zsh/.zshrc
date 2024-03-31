@@ -9,7 +9,7 @@ export DOTNET_ROOT=/usr/share/dotnet
 export GOPATH="$HOME/go"
 export XDG_CONFIG_HOME=$HOME/.config
 export ZSH="$HOME/.oh-my-zsh"
-export REPOS="$HOME /mnt/database/BINIT/Repos/ /mnt/database/Personal/ /mnt/database/UBA/Algo2/Repos/ /mnt/database/UBA/Algo2/Repos/ /mnt/database/UBA/ALC/Repos/ /home/matias/.local" 
+export REPOS="$HOME /mnt/database/Personal/ /mnt/database/UBA /home/matias/.local" 
 
 ZSH_THEME="matias"
 
