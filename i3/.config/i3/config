@@ -205,7 +205,7 @@ exec xrandr --output $m2 --right-of $m1
 # workspace $ws8 output $m2
 # workspace $ws10 output $m2
 
-exec compton -f -D 5
+exec picom -f -D 5
 exec_always feh --bg-scale ~/.config/i3/wallpaper.jpeg  
 exec_always redshift -P -O 2700
 exec pactl unload-module $(pactl list sinks | grep -A7 'Sink #' | grep -A5 'hdmi' | grep 'Owner Module' | awk '{print $NF}')
