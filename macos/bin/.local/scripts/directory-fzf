@@ -1,0 +1,6 @@
+#!/bin/bash
+DIRECTORY=$(find -H -d 1 . $(echo $REPOS) | fzf)
+
+if [ ! -z "$DIRECTORY" ]; then
+    cd $DIRECTORY
+fi
