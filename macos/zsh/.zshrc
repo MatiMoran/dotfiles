@@ -15,7 +15,7 @@ export PATH="$PATH:$FURY_BIN_LOCATION" # Added by Fury CLI installation process
 export PATH="/usr/local/bin:$PATH"
 #export XDG_CONFIG_HOME=$HOME/.config
 export ZSH="$HOME/.oh-my-zsh"
-export REPOS="$HOME" 
+export REPOS="$HOME $HOME/Repos/Meli"
 
 ZSH_THEME="matias"
 
@@ -112,3 +112,7 @@ ex ()
   fi
 }
 
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
