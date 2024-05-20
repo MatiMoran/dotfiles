@@ -5,6 +5,7 @@ SAVEHIST=10000
 export PATH="$PATH:$HOME/.dotnet/tools"
 export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:/opt/mssql-tools18/bin"
+export PATH="$PATH:$HOME/.local/bin"
 export DOTNET_ROOT=/usr/share/dotnet
 export GOPATH="$HOME/go"
 export XDG_CONFIG_HOME=$HOME/.config
