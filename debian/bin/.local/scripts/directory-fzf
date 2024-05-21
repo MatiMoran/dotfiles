@@ -1,6 +1,10 @@
 #!/bin/bash
-DIRECTORY=$(fdfind -H -d 1 . $(echo $REPOS) | fzf)
+HOME_DIRS=$(fdfind -H -d 1 . $(echo $REPOS))
+PWD_DIRS=$(fdfind -H . .)
+DIRECTORY=$(echo $HOME_DIRS $PWD_DIRS | fzf)
 
-if [ ! -z "$DIRECTORY" ]; then
+if [ -d "$DIRECTORY" ]; then
     cd $DIRECTORY
+elif [ -f "$DIRECTORY" ]; then
+    vim $DIRECTORY
 fi
