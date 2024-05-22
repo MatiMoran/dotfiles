@@ -82,8 +82,7 @@ source ~/.config/zsh/fzf/key-bindings.zsh
 
 ### ARCHIVE EXTRACTION
 # usage: ex <file>
-ex ()
-{
+ex () {
   if [ -f "$1" ] ; then
     case $1 in
       *.tar.bz2)   tar xjf $1   ;;
@@ -102,6 +101,16 @@ ex ()
       *.tar.zst)   unzstd $1    ;;
       *)           echo "'$1' cannot be extracted via ex()" ;;
     esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+### OPEN FILE IN BACKGROUND DETACH FOR THE CURRENT SHELL
+# usage: opend <file>
+opend() {
+  if [ -f "$1" ] ; then
+    nohup open "$1" > /dev/null 2>&1 &
   else
     echo "'$1' is not a valid file"
   fi
