@@ -13,5 +13,5 @@ DESTINATION=$(echo $HOME_DIRS $PWD_DIRS | fzf)
 if [ -d "$DESTINATION" ]; then
     cd $DESTINATION
 elif [ -f "$DESTINATION" ]; then
-    open $DESTINATION
+    opend $DESTINATION
 fi
