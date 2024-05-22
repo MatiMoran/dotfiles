@@ -1,4 +1,9 @@
-
 [Default Applications]
 x-scheme-handler/postman=Postman.desktop
 inode/directory=thunar.desktop
+application/pdf=firefox-esr.desktop
+image/jpeg=firefox-esr.desktop
+application/epub+zip=calibre.desktop
+
+[Added Associations]
+image/jpeg=firefox-esr.desktop;
