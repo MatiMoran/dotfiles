@@ -1,4 +1,5 @@
 [Default Applications]
+application/octet-stream=xdg-open
 x-scheme-handler/postman=Postman.desktop
 inode/directory=thunar.desktop
 application/pdf=firefox-esr.desktop
