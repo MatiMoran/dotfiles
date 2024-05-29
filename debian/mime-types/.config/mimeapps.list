@@ -2,9 +2,10 @@
 application/octet-stream=xdg-open
 x-scheme-handler/postman=Postman.desktop
 inode/directory=thunar.desktop
-application/pdf=firefox-esr.desktop
-image/jpeg=firefox-esr.desktop
+application/pdf=brave-browser.desktop
+image/jpeg=brave-browser.desktop
 application/epub+zip=calibre.desktop
+text/plain=nvim.desktop
 
 [Added Associations]
-image/jpeg=firefox-esr.desktop;
+image/jpeg=brave-browser.desktop;
