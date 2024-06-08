@@ -86,6 +86,15 @@ alias cp="cp -i"
 alias mkdir="mkdir -pv"
 
 #------------------------------
+# Suggestions
+#------------------------------
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=
+ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=forward-word
+
+source $ZSH_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+#------------------------------
 # Completions
 #------------------------------
 fpath=($ZSH_PLUGINS/zsh-completions/src $fpath)
@@ -96,20 +105,9 @@ zstyle ':completion:*' completer _complete _approximate
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
+zstyle ':completion:*' menu no
 
-#------------------------------
-# Suggestions
-#------------------------------
-function autosuggest-partial-accept {
-}
-
-zle -N autosuggest-partial-accept
-
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=
-ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=forward-word
-
-source $ZSH_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $ZSH_PLUGINS/fzf-tab/fzf-tab.plugin.zsh
 
 #------------------------------
 # FZF
@@ -177,7 +175,7 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%f "
 ZSH_THEME_GIT_PROMPT_DIRTY="%F{214}) %F{226}%1{✗%f"
 ZSH_THEME_GIT_PROMPT_CLEAN="%F{214})"
 
-function git_prompt_info_2 {
+function git_prompt_info {
   local git_branch=$(git symbolic-ref --short HEAD 2>/dev/null)
 
   if [[ -n $git_branch ]]; then
@@ -196,7 +194,7 @@ function git_prompt_info_2 {
 }
 
 PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg_bold[red]%}%~%{$reset_color%}"
-PROMPT+=' $(git_prompt_info_2)'
+PROMPT+=' $(git_prompt_info)'
 PROMPT+='$ '
 
 #------------------------------
