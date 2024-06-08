@@ -12,21 +12,22 @@ plugins=(
 export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
-autoload -Uz compinit promptinit
-compinit
-promptinit
-
 #------------------------------
 # Exports 
 #------------------------------
-#export PATH="$PATH:$HOME/.dotnet/tools"
-#export PATH="$PATH:/usr/local/go/bin"
-#export PATH="$PATH:/opt/mssql-tools18/bin"
-#export PATH="$PATH:$HOME/.local/bin"
+
+typeset -U path PATH
+path=($path "$HOME/.local/bin")
+#path=($path "$HOME/.dotnet/tools")
+#path=($path "/usr/local/go/bin")
+#path=($path "/opt/mssql-tools18/bin")
+export PATH
+
 #export DOTNET_ROOT=/usr/share/dotnet
 #export GOPATH="$HOME/go"
+
 export XDG_CONFIG_HOME=$HOME/.config
-export REPOS="$HOME $HOME/database/Personal/ $HOME/database/UBA $HOME/.local" 
+export COMMON_DIRS="$HOME $HOME/database/Personal/ $HOME/database/UBA $HOME/.local" 
 
 #------------------------------
 # History 
@@ -44,12 +45,49 @@ setopt hist_ignore_dups
 setopt hist_find_no_dups
 
 #------------------------------
+# cd 
+#------------------------------
+
+setopt AUTO_PUSHD           # Push the current directory visited on the stack.
+setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
+setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
+alias d='dirs -v'
+
+function fuzzy_open {
+
+    local HOME_DIRS PWD_DIRS DESTINATION
+
+    HOME_DIRS=$(fdfind -H -d 1 . $(echo $COMMON_DIRS))
+    
+    if [ "$(pwd)" = "$HOME" ]; then
+        PWD_DIRS=""
+    else
+        PWD_DIRS=$(fdfind -H . .)
+    fi
+    
+    DESTINATION=$(echo $HOME_DIRS $PWD_DIRS | fzf)
+    
+    if [ -d "$DESTINATION" ]; then
+        cd $DESTINATION
+    elif [ -f "$DESTINATION" ]; then
+        opend $DESTINATION
+    fi
+}
+
+zle -N fuzzy_open
+
+#------------------------------
+# Default Apps 
+#------------------------------
+export BROWSER="brave"
+export EDITOR="nvim"
+
+#------------------------------
 # Alias 
 #------------------------------
 alias find='fdfind'
 alias grep='rg'
 alias vim='nvim'
-
 alias ll='ls -hlF --group-directories-first'
 alias lla='ls -ahlF --group-directories-first'
 alias free='free -m'
@@ -58,22 +96,23 @@ alias cp="cp -i"
 alias mkdir="mkdir -pv"
 
 #------------------------------
-# Completion 
-#------------------------------
-
-#------------------------------
 # Keybindings
 #------------------------------
 
 # enable vim mode
 bindkey -v
-bindkey -s '^f' 'source $HOME/.local/scripts/directory-fzf\n'
+bindkey '^f' fuzzy_open
+
+#------------------------------
+# Completions
+#------------------------------
+
+autoload -Uz compinit; compinit
 
 #------------------------------
 # FZF
 #------------------------------
-source $XDG_CONFIG_HOME/zsh/fzf/completion.zsh
-source $XDG_CONFIG_HOME/zsh/fzf/key-bindings.zsh
+FZF_ALT_C_COMMAND= FZF_CTRL_T_COMMAND= source <(fzf --zsh)
 
 #------------------------------
 # Custom Functions
@@ -114,4 +153,11 @@ opend() {
     echo "'$1' is not a valid file"
   fi
 }
+
+#------------------------------
+# Starts a new tmux session
+#------------------------------
+if [ ! -n "$TMUX" ]; then
+    tmux new-session -A -s main
+fi
 
