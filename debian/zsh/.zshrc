@@ -10,7 +10,7 @@ plugins=(
 )
 
 export ZSH="$HOME/.oh-my-zsh"
-source $ZSH/oh-my-zsh.sh
+#source $ZSH/oh-my-zsh.sh
 
 #------------------------------
 # Exports 
@@ -155,6 +155,40 @@ opend() {
     echo "'$1' is not a valid file"
   fi
 }
+
+#------------------------------
+# Theme
+#------------------------------
+
+autoload -Uz colors; colors
+setopt PROMPT_SUBST
+
+ZSH_THEME_GIT_PROMPT_PREFIX="%F{214}git:(%F{226}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%f "
+ZSH_THEME_GIT_PROMPT_DIRTY="%F{214}) %F{226}%1{✗%f"
+ZSH_THEME_GIT_PROMPT_CLEAN="%F{214})"
+
+function git_prompt_info_2 {
+  local git_branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+
+  if [[ -n $git_branch ]]; then
+    local git_status=$(git status --porcelain 2>/dev/null)
+    local git_dirty=""
+    local git_clean=""
+
+    if [[ -n $git_status ]]; then
+      git_dirty="${ZSH_THEME_GIT_PROMPT_DIRTY}"
+    else
+      git_clean="${ZSH_THEME_GIT_PROMPT_CLEAN}"
+    fi
+
+    echo "${ZSH_THEME_GIT_PROMPT_PREFIX}${git_branch}${git_dirty}${git_clean}${ZSH_THEME_GIT_PROMPT_SUFFIX}"
+  fi
+}
+
+PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg_bold[red]%}%~%{$reset_color%}"
+PROMPT+=' $(git_prompt_info_2)'
+PROMPT+='$ '
 
 #------------------------------
 # Starts a new tmux session
