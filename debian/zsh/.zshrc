@@ -1,18 +1,4 @@
 #------------------------------
-# Oh My Zsh 
-#------------------------------
-ZSH_THEME="matias"
-
-plugins=(
-    zsh-autosuggestions
-    zsh-completions
-    zsh-syntax-highlighting
-)
-
-export ZSH="$HOME/.oh-my-zsh"
-#source $ZSH/oh-my-zsh.sh
-
-#------------------------------
 # Exports 
 #------------------------------
 
@@ -27,7 +13,9 @@ export PATH
 #export GOPATH="$HOME/go"
 
 export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
 export COMMON_DIRS="$HOME $HOME/database/Personal/ $HOME/database/UBA $HOME/.local" 
+export ZSH_PLUGINS="$HOME/.config/zsh/plugins"
 
 #------------------------------
 # History 
@@ -45,7 +33,7 @@ setopt hist_ignore_dups
 setopt hist_find_no_dups
 
 #------------------------------
-# cd 
+# Navigation 
 #------------------------------
 
 setopt AUTO_PUSHD           # Push the current directory visited on the stack.
@@ -89,8 +77,8 @@ export EDITOR="nvim"
 alias find='fdfind'
 alias grep='rg'
 alias vim='nvim'
-alias ll='ls -hlF --group-directories-first'
-alias lla='ls -ahlF --group-directories-first'
+alias ll='ls -hlF --group-directories-first --color'
+alias lla='ls -ahlF --group-directories-first --color'
 alias free='free -m'
 alias ..="cd .."
 alias d='dirs -v'
@@ -98,23 +86,44 @@ alias cp="cp -i"
 alias mkdir="mkdir -pv"
 
 #------------------------------
-# Keybindings
-#------------------------------
-
-# enable vim mode
-bindkey -v
-bindkey '^f' fuzzy_open
-
-#------------------------------
 # Completions
 #------------------------------
+fpath=($ZSH_PLUGINS/zsh-completions/src $fpath)
 
 autoload -Uz compinit; compinit
+
+zstyle ':completion:*' completer _complete _approximate
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
+
+#------------------------------
+# Suggestions
+#------------------------------
+function autosuggest-partial-accept {
+}
+
+zle -N autosuggest-partial-accept
+
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=
+ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=forward-word
+
+source $ZSH_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 #------------------------------
 # FZF
 #------------------------------
 FZF_ALT_C_COMMAND= FZF_CTRL_T_COMMAND= source <(fzf --zsh)
+
+#------------------------------
+# Keybindings
+#------------------------------
+
+bindkey -v # enable vim mode
+bindkey '^f' fuzzy_open
+bindkey '^y' autosuggest-accept
+bindkey '^p' forward-word
 
 #------------------------------
 # Custom Functions
@@ -189,6 +198,11 @@ function git_prompt_info_2 {
 PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg_bold[red]%}%~%{$reset_color%}"
 PROMPT+=' $(git_prompt_info_2)'
 PROMPT+='$ '
+
+#------------------------------
+# Syntax Highlighting
+#------------------------------
+source $ZSH_PLUGINS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 #------------------------------
 # Starts a new tmux session
