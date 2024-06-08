@@ -51,7 +51,6 @@ setopt hist_find_no_dups
 setopt AUTO_PUSHD           # Push the current directory visited on the stack.
 setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
 setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
-alias d='dirs -v'
 
 function fuzzy_open {
 
@@ -72,6 +71,8 @@ function fuzzy_open {
     elif [ -f "$DESTINATION" ]; then
         opend $DESTINATION
     fi
+
+    zle accept-line
 }
 
 zle -N fuzzy_open
@@ -92,6 +93,7 @@ alias ll='ls -hlF --group-directories-first'
 alias lla='ls -ahlF --group-directories-first'
 alias free='free -m'
 alias ..="cd .."
+alias d='dirs -v'
 alias cp="cp -i"
 alias mkdir="mkdir -pv"
 
