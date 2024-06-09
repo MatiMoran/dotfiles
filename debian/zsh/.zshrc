@@ -45,7 +45,7 @@ function fuzzy_open {
 
     local HOME_DIRS PWD_DIRS DESTINATION
 
-    HOME_DIRS=$(fdfind -H -d 1 . $(echo $COMMON_DIRS))
+    HOME_DIRS=$(find -H -d 1 . $(echo $COMMON_DIRS))
     
     if [ "$(pwd)" = "$HOME" ]; then
         PWD_DIRS=""
@@ -53,7 +53,7 @@ function fuzzy_open {
         PWD_DIRS=$(fdfind -H . .)
     fi
     
-    DESTINATION=$(echo $HOME_DIRS $PWD_DIRS | fzf)
+    DESTINATION=$(echo $HOME_DIRS $PWD_DIRS | fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")
     
     if [ -d "$DESTINATION" ]; then
         cd $DESTINATION
@@ -75,9 +75,11 @@ export EDITOR="nvim"
 #------------------------------
 # Alias 
 #------------------------------
-alias find='fdfind'
+alias find='fd'
 alias grep='rg'
+alias cat='bat'
 alias vim='nvim'
+
 alias ll='ls -hlF --group-directories-first --color'
 alias lla='ls -ahlF --group-directories-first --color'
 alias free='free -m'
@@ -85,6 +87,7 @@ alias ..="cd .."
 alias d='dirs -v'
 alias cp="cp -i"
 alias mkdir="mkdir -pv"
+alias bathelp='bat --plain --language=help'
 
 #------------------------------
 # Suggestions
@@ -109,6 +112,7 @@ zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
 zstyle ':completion:*' menu no
 
 source $ZSH_PLUGINS/fzf-tab/fzf-tab.plugin.zsh
+zstyle ':fzf-tab:*' continuous-trigger 'tab'
 
 #------------------------------
 # FZF
@@ -128,7 +132,7 @@ bindkey '^p' forward-word
 # Custom Functions
 #------------------------------
 
-### ARCHIVE EXTRACTION
+### Extract file
 # usage: ex <file>
 ex () {
   if [ -f "$1" ] ; then
@@ -154,7 +158,7 @@ ex () {
   fi
 }
 
-### OPEN FILE IN BACKGROUND DETACH FOR THE CURRENT SHELL
+### Open file in background in detached shell
 # usage: opend <file>
 opend() {
   if [ -f "$1" ] ; then
@@ -162,6 +166,12 @@ opend() {
   else
     echo "'$1' is not a valid file"
   fi
+}
+
+### Open colorized help
+# usage: help <command>
+help() {
+    "$@" --help | bathelp
 }
 
 #------------------------------
@@ -197,6 +207,9 @@ function git_prompt_info {
 PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg_bold[red]%}%~%{$reset_color%}"
 PROMPT+=' $(git_prompt_info)'
 PROMPT+='$ '
+
+export BAT_THEME="Visual Studio Dark+"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 #------------------------------
 # Syntax Highlighting
