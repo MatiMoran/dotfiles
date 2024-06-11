@@ -14,7 +14,7 @@ export PATH
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
-export COMMON_DIRS="$HOME/Repos/Meli" 
+export COMMON_DIRS="$HOME $HOME/Repos/Meli" 
 export ZSH_PLUGINS="$HOME/.config/zsh/plugins"
 
 #------------------------------
