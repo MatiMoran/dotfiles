@@ -1,94 +1,145 @@
-HISTFILE=~/.histfile
+#------------------------------
+# Exports 
+#------------------------------
+
+typeset -U path PATH
+path=($path "$HOME/.local/bin")
+#path=($path "$HOME/.dotnet/tools")
+#path=($path "/usr/local/go/bin")
+#path=($path "/opt/mssql-tools18/bin")
+export PATH
+
+#export DOTNET_ROOT=/usr/share/dotnet
+#export GOPATH="$HOME/go"
+
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export COMMON_DIRS="$HOME" 
+export ZSH_PLUGINS="$HOME/.config/zsh/plugins"
+
+#------------------------------
+# History 
+#------------------------------
+HISTFILE=$HOME/.zsh_history
 HISTSIZE=10000
-SAVEHIST=10000
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
 
-#Added by furycli:
-export PATH=/Users/matmoran/Library/Python//bin:/opt/homebrew/bin:/opt/homebrew/sbin:/bin:/usr/bin
-export RANGER_FURY_LOCATION=/Users/matmoran/.fury #Added by Fury CLI
-export RANGER_FURY_VENV_LOCATION=/Users/matmoran/.fury/fury_venv #Added by Fury CLI
+#------------------------------
+# Navigation 
+#------------------------------
 
-# Added by Fury CLI installation process
-declare FURY_BIN_LOCATION="/Users/matmoran/.fury/fury_venv/bin" # Added by Fury CLI installation process
-export PATH="$PATH:$FURY_BIN_LOCATION" # Added by Fury CLI installation process
-# Added by Fury CLI installation process
+setopt AUTO_PUSHD           # Push the current directory visited on the stack.
+setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
+setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
+setopt GLOBDOTS
 
-export PATH="/usr/local/bin:$PATH"
-#export XDG_CONFIG_HOME=$HOME/.config
-export ZSH="$HOME/.oh-my-zsh"
-export REPOS="$HOME $HOME/Repos/Meli"
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
 
-ZSH_THEME="matias"
+export _ZO_DATA_DIR=$XDG_CACHE_HOME
+eval "$(zoxide init --cmd cd zsh)"
 
-autoload -Uz compinit promptinit
-compinit
-promptinit
+function fuzzy_open {
 
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
+    local HOME_DIRS PWD_DIRS DESTINATION
 
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-#
-plugins=(
-    git
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-)
+    HOME_DIRS=$(find -H -d 1 . $(echo $COMMON_DIRS))
+    
+    if [ "$(pwd)" = "$HOME" ]; then
+        PWD_DIRS=""
+    else
+        PWD_DIRS=$(find -H . .)
+    fi
+    
+    DESTINATION=$(echo $HOME_DIRS $PWD_DIRS | fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")
+    
+    if [ -d "$DESTINATION" ]; then
+        cd $DESTINATION
+    elif [ -f "$DESTINATION" ]; then
+        opend $DESTINATION
+    fi
 
-source $ZSH/oh-my-zsh.sh
+    zle accept-line
+}
+
+zle -N fuzzy_open
+
+#------------------------------
+# Default Apps 
+#------------------------------
+export BROWSER="brave"
+export EDITOR="nvim"
 
 #------------------------------
 # Alias 
 #------------------------------
 alias find='fd'
 alias grep='rg'
+alias cat='bat'
 alias vim='nvim'
 
-alias ll='ls -hlF'
-alias lla='ls -ahlF'
+alias ll='ls -hlF --color'
+alias lla='ls -ahlF --color'
 alias free='free -m'
 alias ..="cd .."
+alias d='dirs -v'
 alias cp="cp -i"
 alias mkdir="mkdir -pv"
+alias bathelp='bat --plain --language=help'
 
-zstyle ':completion:*' auto-description 'specify: %d'
-zstyle ':completion:*' completer _expand _complete _correct _approximate
-zstyle ':completion:*' format 'Completing %d'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' menu select=2
-#eval "$(dircolors -b)"
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
-zstyle ':completion:*' menu select=long
-zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle ':completion:*' use-compctl false
-zstyle ':completion:*' verbose true
+#------------------------------
+# Suggestions
+#------------------------------
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=
+ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS=forward-word
 
-zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
-zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+source $ZSH_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+#------------------------------
+# Completions
+#------------------------------
+fpath=($ZSH_PLUGINS/zsh-completions/src $fpath)
+
+autoload -Uz compinit; compinit
+
+zstyle ':completion:*' completer _complete _approximate
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
+zstyle ':completion:*' menu no
+
+source $ZSH_PLUGINS/fzf-tab/fzf-tab.plugin.zsh
+zstyle ':fzf-tab:*' continuous-trigger 'tab'
+
+#------------------------------
+# FZF
+#------------------------------
+FZF_ALT_C_COMMAND= FZF_CTRL_T_COMMAND= source <(fzf --zsh)
 
 #------------------------------
 # Keybindings
 #------------------------------
-bindkey -v
-bindkey -s '^f' 'source ~/.local/scripts/directory-fzf\n'
-#bindkey -s '^l' 'clear\n'
 
-source ~/.config/zsh/fzf/completion.zsh
-source ~/.config/zsh/fzf/key-bindings.zsh
+bindkey -v # enable vim mode
+bindkey '^f' fuzzy_open
+bindkey '^y' autosuggest-accept
+bindkey '^p' forward-word
 
-### ARCHIVE EXTRACTION
+#------------------------------
+# Custom Functions
+#------------------------------
+
+### Extract file
 # usage: ex <file>
-ex ()
-{
+ex () {
   if [ -f "$1" ] ; then
     case $1 in
       *.tar.bz2)   tar xjf $1   ;;
@@ -112,7 +163,68 @@ ex ()
   fi
 }
 
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
+### Open file in background in detached shell
+# usage: opend <file>
+opend() {
+  if [ -f "$1" ] ; then
+    nohup open "$1" > /dev/null 2>&1 &
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+### Open colorized help
+# usage: help <command>
+help() {
+    "$@" --help | bathelp
+}
+
+#------------------------------
+# Theme
+#------------------------------
+
+autoload -Uz colors; colors
+setopt PROMPT_SUBST
+
+ZSH_THEME_GIT_PROMPT_PREFIX="%F{214}git:(%F{226}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%f "
+ZSH_THEME_GIT_PROMPT_DIRTY="%F{214}) %F{226}%1{✗%f"
+ZSH_THEME_GIT_PROMPT_CLEAN="%F{214})"
+
+function git_prompt_info {
+  local git_branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+
+  if [[ -n $git_branch ]]; then
+    local git_status=$(git status --porcelain 2>/dev/null)
+    local git_dirty=""
+    local git_clean=""
+
+    if [[ -n $git_status ]]; then
+      git_dirty="${ZSH_THEME_GIT_PROMPT_DIRTY}"
+    else
+      git_clean="${ZSH_THEME_GIT_PROMPT_CLEAN}"
+    fi
+
+    echo "${ZSH_THEME_GIT_PROMPT_PREFIX}${git_branch}${git_dirty}${git_clean}${ZSH_THEME_GIT_PROMPT_SUFFIX}"
+  fi
+}
+
+PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg_bold[red]%}%~%{$reset_color%}"
+PROMPT+=' $(git_prompt_info)'
+PROMPT+='$ '
+
+export BAT_THEME="Visual Studio Dark+"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+#------------------------------
+# Syntax Highlighting
+#------------------------------
+source $ZSH_PLUGINS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+#------------------------------
+# Starts a new tmux session
+#------------------------------
+if [ ! -n "$TMUX" ]; then
+    tmux new-session -A -s main
+fi
+
