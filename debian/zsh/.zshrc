@@ -41,6 +41,11 @@ setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
 setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
 setopt GLOBDOTS
 
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
+
+export _ZO_DATA_DIR=$XDG_CACHE_HOME
+eval "$(zoxide init --cmd cd zsh)"
+
 function fuzzy_open {
 
     local HOME_DIRS PWD_DIRS DESTINATION
@@ -50,7 +55,7 @@ function fuzzy_open {
     if [ "$(pwd)" = "$HOME" ]; then
         PWD_DIRS=""
     else
-        PWD_DIRS=$(fdfind -H . .)
+        PWD_DIRS=$(find -H . .)
     fi
     
     DESTINATION=$(echo $HOME_DIRS $PWD_DIRS | fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")
