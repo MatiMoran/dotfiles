@@ -221,7 +221,7 @@ PROMPT+='$ '
 export BAT_THEME="Visual Studio Dark+"
 #export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
-LS_COLORS=$(cat $HOME/.ls-colors)
+LS_COLORS=$(cat $XDG_CONFIG_HOME/zsh/.ls-colors)
 
 #------------------------------
 # Syntax Highlighting
