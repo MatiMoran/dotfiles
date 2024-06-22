@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Calibre Reader
+GenericName=E-book Reader
+Comment=Manage and read e-books
+Exec=calibre
+Icon=calibre
+Terminal=false
+Categories=Office;Viewer;
+MimeType=application/epub+zip;
+
