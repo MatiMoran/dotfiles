@@ -51,7 +51,7 @@ alias ll='ls -hlF --group-directories-first --color'
 alias lla='ls -ahlF --group-directories-first --color'
 alias free='free -m'
 alias ..="cd .."
-alias d='dirs -v'
+alias d='fuzzy-open-recent'
 alias cp="cp -i"
 alias mkdir="mkdir -pv"
 alias bathelp='bat --plain --language=help'
@@ -95,9 +95,9 @@ zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
 export _ZO_DATA_DIR=$XDG_CACHE_HOME
 eval "$(zoxide init --cmd cd zsh)"
 
-function fuzzy_open {
+function fuzzy-open {
 
-    local HOME_DIRS PWD_DIRS DESTINATION
+    local HOME_DIRS PWD_DIRS RECENT_DIRS DESTINATION
 
     HOME_DIRS=$(find -H -d 1 . $(echo $COMMON_DIRS))
     
@@ -107,7 +107,11 @@ function fuzzy_open {
         PWD_DIRS=$(find -H . .)
     fi
     
-    DESTINATION=$(echo $HOME_DIRS $PWD_DIRS | fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")
+    RECENT_DIRS=$(dirs | sed 's/\ /\n/g')
+
+    DESTINATION=$(echo $HOME_DIRS $PWD_DIRS $RECENT_DIRS | fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")
+    echo $DESTINATION
+    DESTINATION=realpath $DESTINATION
     
     if [ -d "$DESTINATION" ]; then
         cd $DESTINATION
@@ -118,7 +122,7 @@ function fuzzy_open {
     zle accept-line
 }
 
-zle -N fuzzy_open
+zle -N fuzzy-open
 
 #------------------------------
 # FZF
@@ -130,7 +134,7 @@ FZF_ALT_C_COMMAND= FZF_CTRL_T_COMMAND= source <(fzf --zsh)
 #------------------------------
 
 bindkey -v # enable vim mode
-bindkey '^f' fuzzy_open
+bindkey '^f' fuzzy-open
 bindkey '^y' autosuggest-accept
 bindkey '^p' forward-word
 
@@ -216,6 +220,8 @@ PROMPT+='$ '
 
 export BAT_THEME="Visual Studio Dark+"
 #export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+LS_COLORS=$(cat $HOME/.ls-colors)
 
 #------------------------------
 # Syntax Highlighting
