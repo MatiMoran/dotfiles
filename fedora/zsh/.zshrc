@@ -14,7 +14,7 @@ export PATH
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
-export COMMON_DIRS="$HOME $HOME/Database/Personal/ $HOME/Database/UBA $HOME/.local" 
+export COMMON_DIRS="$HOME $HOME/Database $HOME/Database/Personal $HOME/Database/UBA $HOME/.local" 
 export ZSH_PLUGINS="$HOME/.config/zsh/plugins"
 
 #------------------------------
@@ -31,45 +31,6 @@ setopt hist_ignore_all_dups
 setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
-
-#------------------------------
-# Navigation 
-#------------------------------
-
-setopt AUTO_PUSHD           # Push the current directory visited on the stack.
-setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
-setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
-setopt GLOBDOTS
-
-zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
-
-export _ZO_DATA_DIR=$XDG_CACHE_HOME
-eval "$(zoxide init --cmd cd zsh)"
-
-function fuzzy_open {
-
-    local HOME_DIRS PWD_DIRS DESTINATION
-
-    HOME_DIRS=$(find -H -d 1 . $(echo $COMMON_DIRS))
-    
-    if [ "$(pwd)" = "$HOME" ]; then
-        PWD_DIRS=""
-    else
-        PWD_DIRS=$(find -H . .)
-    fi
-    
-    DESTINATION=$(echo $HOME_DIRS $PWD_DIRS | fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")
-    
-    if [ -d "$DESTINATION" ]; then
-        cd $DESTINATION
-    elif [ -f "$DESTINATION" ]; then
-        opend $DESTINATION
-    fi
-
-    zle accept-line
-}
-
-zle -N fuzzy_open
 
 #------------------------------
 # Default Apps 
@@ -119,6 +80,45 @@ zstyle ':completion:*' menu no
 
 source $ZSH_PLUGINS/fzf-tab/fzf-tab.plugin.zsh
 zstyle ':fzf-tab:*' continuous-trigger 'tab'
+
+#------------------------------
+# Navigation 
+#------------------------------
+
+setopt AUTO_PUSHD           # Push the current directory visited on the stack.
+setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
+setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
+setopt GLOBDOTS
+
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
+
+export _ZO_DATA_DIR=$XDG_CACHE_HOME
+eval "$(zoxide init --cmd cd zsh)"
+
+function fuzzy_open {
+
+    local HOME_DIRS PWD_DIRS DESTINATION
+
+    HOME_DIRS=$(find -H -d 1 . $(echo $COMMON_DIRS))
+    
+    if [ "$(pwd)" = "$HOME" ]; then
+        PWD_DIRS=""
+    else
+        PWD_DIRS=$(find -H . .)
+    fi
+    
+    DESTINATION=$(echo $HOME_DIRS $PWD_DIRS | fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")
+    
+    if [ -d "$DESTINATION" ]; then
+        cd $DESTINATION
+    elif [ -f "$DESTINATION" ]; then
+        opend $DESTINATION
+    fi
+
+    zle accept-line
+}
+
+zle -N fuzzy_open
 
 #------------------------------
 # FZF
@@ -215,7 +215,7 @@ PROMPT+=' $(git_prompt_info)'
 PROMPT+='$ '
 
 export BAT_THEME="Visual Studio Dark+"
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+#export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 #------------------------------
 # Syntax Highlighting
