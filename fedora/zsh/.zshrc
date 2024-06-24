@@ -51,7 +51,6 @@ alias ll='ls -hlF --group-directories-first --color'
 alias lla='ls -ahlF --group-directories-first --color'
 alias free='free -m'
 alias ..="cd .."
-alias d='fuzzy-open-recent'
 alias cp="cp -i"
 alias mkdir="mkdir -pv"
 alias bathelp='bat --plain --language=help'
@@ -110,9 +109,11 @@ function fuzzy-open {
     RECENT_DIRS=$(dirs | sed 's/\ /\n/g')
 
     DESTINATION=$(echo $HOME_DIRS $PWD_DIRS $RECENT_DIRS | fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")
-    echo $DESTINATION
-    DESTINATION=realpath $DESTINATION
-    
+
+    if [[ "${DESTINATION:0:1}" == "~" ]]; then
+        DESTINATION="${HOME}${DESTINATION:1}"
+    fi
+
     if [ -d "$DESTINATION" ]; then
         cd $DESTINATION
     elif [ -f "$DESTINATION" ]; then
