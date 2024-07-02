@@ -2,9 +2,8 @@
 
 current_sink=$(pactl get-default-sink)
 
-exclude_sink=("alsa_output.pci-0000_03_00.1.hdmi-stereo" "combined")
-grep_pattern=$(IFS='|'; echo "${exclude_sink[*]}")
-sinks=($(pactl list sinks short | awk '{print $2}' | sed -E "s/\b($(IFS='|'; echo "${exclude_sink[*]}"))\b//g"))
+exclude_sink="/\(hdmi\|combined\)/d"
+sinks=($(pactl list sinks short | awk '{print $2}' | sed "$(echo $exclude_sink)"))
 
 for i in "${!sinks[@]}"; do
     if [[ "${sinks[i]}" == "$current_sink" ]];
