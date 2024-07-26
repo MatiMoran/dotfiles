@@ -14,7 +14,7 @@ export PATH
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
-export COMMON_DIRS="$HOME $HOME/Database $HOME/Database/Personal $HOME/Database/UBA $HOME/.local" 
+export COMMON_DIRS="$HOME $HOME/Database/files $HOME/Database/files/Repos/Personal $HOME/Database/files/Repos/UBA $HOME/.local" 
 export ZSH_PLUGINS="$HOME/.config/zsh/plugins"
 
 #------------------------------
