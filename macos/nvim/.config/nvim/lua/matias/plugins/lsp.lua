@@ -18,7 +18,7 @@ return {
 
             cmp.setup({
                 sources = {
-                    {name = 'codeium'},
+                    {name = 'copilot'},
                     {name = 'nvim_lsp'},
                 },
                 --- (Optional) Show source name in completion menu
