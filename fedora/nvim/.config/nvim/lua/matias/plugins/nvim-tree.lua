@@ -16,7 +16,7 @@ return {
 
             api.config.mappings.default_on_attach(bufnr)
 
-            vim.keymap.set("n", "<leader>pv", api.tree.toggle)
+            vim.keymap.set("n", "<leader>v", api.tree.toggle)
         end
 
         require("nvim-tree").setup {

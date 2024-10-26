@@ -30,12 +30,8 @@ return {
             -- keymaps
             local keymaps = vim.keymap
 
-            keymaps.set("n", "<leader>ps", function()
+            keymaps.set("n", "<leader>s", function()
                 builtin.grep_string({ search = vim.fn.input("Grep > ") });
-            end)
-
-            keymaps.set("n", "<leader>pf", function()
-                builtin.find_files({ no_ignore = true });
             end)
 
             keymaps.set("n", "<C-p>", function()
