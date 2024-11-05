@@ -138,6 +138,7 @@ bindkey -v # enable vim mode
 bindkey '^f' fuzzy-open
 bindkey '^y' autosuggest-accept
 bindkey '^p' forward-word
+bindkey "^[[3~" delete-char
 
 #------------------------------
 # Custom Functions
