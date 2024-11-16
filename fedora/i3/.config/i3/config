@@ -197,7 +197,7 @@ set $m1 "HDMI-A-0"
 set $m2 "DisplayPort-0"
 
 exec_always xrandr --auto
-exec_always xrandr --output $m2 --right-of $m1
+exec_always xrandr --output $m2 --left-of $m1
 # workspace $ws1 output $m1
 # workspace $ws3 output $m1
 # workspace $ws5 output $m1
