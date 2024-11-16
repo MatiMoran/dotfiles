@@ -15,6 +15,9 @@ return {
             local builtin = require("telescope.builtin")
 
             telescope.setup {
+                defaults = {
+                    file_ignore_patterns = { ".git/", "node_modules/" },
+                },
                 extensions = {
                     fzf = {
                         fuzzy = true,                    -- false will only do exact matching
@@ -35,7 +38,7 @@ return {
             end)
 
             keymaps.set("n", "<C-p>", function()
-                builtin.find_files({ no_ignore = true });
+                builtin.find_files({ hidden=true });
             end)
         end,
     }
