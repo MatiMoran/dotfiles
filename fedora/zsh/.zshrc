@@ -44,7 +44,7 @@ export EDITOR="nvim"
 alias open='xdg-open'
 alias find='fd'
 alias grep='rg'
-alias cat='bat'
+alias cat='bat --style=plain'
 alias vim='nvim'
 
 alias ll='ls -hlF --group-directories-first --color'
