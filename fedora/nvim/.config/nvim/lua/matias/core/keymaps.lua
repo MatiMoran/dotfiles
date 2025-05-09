@@ -12,11 +12,10 @@ vim.keymap.set("n", "N", "Nzzzv")
 -- copy to pc clipboard
 vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
-
--- paste from clipboard
-vim.keymap.set({"n", "v"}, "<leader>p", [["+p]])
-
 vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
+
+-- paste from pc clipboard
+vim.keymap.set({"n", "v"}, "<leader>p", [["+p]])
 
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 vim.keymap.set("n", "<leader>.", vim.lsp.buf.code_action)
@@ -24,3 +23,8 @@ vim.keymap.set("n", "<leader>.", vim.lsp.buf.code_action)
 vim.keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")
 end)
+
+-- quickfix list
+vim.keymap.set('n', ']q', '<cmd>cnext<CR>zz')
+vim.keymap.set('n', ']l', '<cmd>cprev<CR>zz')
+
