@@ -29,6 +29,9 @@ foreground = "#C6C6C4"
 [font]
 size = 14.0
 
+[font.normal]
+family = "CaskaydiaCove Nerd Font Mono"
+
 #[font.bold]
 #family = "CascadiaCodeNF"
 #style = "Bold"
@@ -40,10 +43,6 @@ size = 14.0
 #[font.italic]
 #family = "CascadiaCodeNF"
 #style = "Italic"
-#
-#[font.normal]
-#family = "CascadiaCodeNF"
-#style = "Regular"
 
 [scrolling]
 history = 10000

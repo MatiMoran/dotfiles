@@ -38,8 +38,8 @@ return {
             require('mason').setup({})
             require('mason-lspconfig').setup({
                 ensure_installed = {
-                    "clangd",
-                    "pyright"
+                    --"clangd",
+                    --pyright"
                 },
                 handlers = {
                     lsp_zero.default_setup,
