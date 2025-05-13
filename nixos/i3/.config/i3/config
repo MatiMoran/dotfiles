@@ -1,6 +1,6 @@
 set $mod Mod4
 
-font pango:monospace 8
+font pango:monospace 10
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -171,7 +171,7 @@ bar {
     status_command i3blocks
     tray_output primary
     tray_padding 0
-    font pango:CascadiaCodeNF 12
+    font pango:CaskaydiaCove Nerd Font Mono 16
 
     bindsym button4 nop
     bindsym button5 nop
