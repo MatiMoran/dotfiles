@@ -171,7 +171,7 @@ bar {
     status_command i3blocks
     tray_output primary
     tray_padding 0
-    font pango:CaskaydiaCove Nerd Font Mono 16
+    font pango:CaskaydiaCove Nerd Font Mono 13
 
     bindsym button4 nop
     bindsym button5 nop
