@@ -206,7 +206,8 @@ function git_prompt_info {
   local git_branch=$(git symbolic-ref --short HEAD 2>/dev/null)
 
   if [[ -n $git_branch ]]; then
-    local git_status=$(git status --porcelain 2>/dev/null)
+    #local git_status=$(git status --porcelain 2>/dev/null)
+    local git_status=""
     local git_dirty=""
     local git_clean=""
 
