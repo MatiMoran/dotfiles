@@ -1,0 +1,9 @@
+[submodule "nixos/zsh/.config/zsh/plugins/zsh-syntax-highlighting"]
+	path = nixos/zsh/.config/zsh/plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
+[submodule "nixos/zsh/.config/zsh/plugins/zsh-completions"]
+	path = nixos/zsh/.config/zsh/plugins/zsh-completions
+	url = https://github.com/zsh-users/zsh-completions
+[submodule "nixos/zsh/.config/zsh/plugins/zsh-autosuggestions"]
+	path = nixos/zsh/.config/zsh/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions
