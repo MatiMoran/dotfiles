@@ -69,7 +69,11 @@ source $ZSH_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh
 #------------------------------
 fpath=($ZSH_PLUGINS/zsh-completions/src $fpath)
 
-autoload -Uz compinit; compinit -i
+autoload -Uz compinit
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit -i
+done
+compinit -i -C
 
 zstyle ':completion:*' completer _complete _approximate
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
