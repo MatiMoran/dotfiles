@@ -193,8 +193,8 @@ bar {
 default_border pixel 0
 default_floating_border pixel 0
 
-set $m1 "HDMI-1"
-set $m2 "DP-1"
+set $m1 "HDMI-A-0"
+set $m2 "DisplayPort-0"
 
 exec_always xrandr --auto
 exec_always xrandr --output $m2 --left-of $m1
@@ -213,4 +213,8 @@ exec picom --backend xrender -f -D 5
 exec_always feh --bg-scale ~/.config/i3/wallpaper.jpeg  
 exec_always redshift -P -O 2700
 exec pactl unload-module $(pactl list sinks | grep -A7 'Sink #' | grep -A5 'hdmi' | grep 'Owner Module' | awk '{print $NF}')
+exec xsetwacom --set "Wacom One by Wacom S Pen stylus" MapToOutput $m1
+exec xsetwacom --set "Wacom One by Wacom S Pen eraser" MapToOutput $m1
+exec xsetwacom --set "Wacom One by Wacom S Pen stylus" Rotate half
+exec xsetwacom --set "Wacom One by Wacom S Pen eraser" Rotate half
 
