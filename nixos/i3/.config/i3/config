@@ -213,6 +213,6 @@ exec picom --backend xrender -f -D 5
 exec_always feh --bg-scale ~/.config/i3/wallpaper.jpeg  
 exec_always redshift -P -O 2700
 exec pactl unload-module $(pactl list sinks | grep -A7 'Sink #' | grep -A5 'hdmi' | grep 'Owner Module' | awk '{print $NF}')
-exec xsetwacom --set "Wacom One by Wacom S Pen stylus" MapToOutput $m1
-exec xsetwacom --set "Wacom One by Wacom S Pen eraser" MapToOutput $m1
+exec_always xsetwacom --set "Wacom One by Wacom S Pen stylus" MapToOutput $m1
+exec_always xsetwacom --set "Wacom One by Wacom S Pen eraser" MapToOutput $m1
 
