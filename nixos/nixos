@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 if [[ -z $STOW_FOLDERS ]]; then
-    STOW_FOLDERS="alacritty,bin,calibre,dunst,i3,mime-types,nvim,pipewire,rofi,tmux,zsh"
+    STOW_FOLDERS="alacritty,bash,bin,calibre,dunst,i3,kanata,mime-types,nvim,pipewire,rofi,themes,tmux,zsh"
 fi
 
 if [[ -z $DOTFILES ]]; then
-    DOTFILES=$HOME/.dotfiles
+    DOTFILES=$HOME/Database/files/Repos/Personal/dotfiles/nixos
 fi
 
 STOW_FOLDERS=$STOW_FOLDERS DOTFILES=$DOTFILES $DOTFILES/install
