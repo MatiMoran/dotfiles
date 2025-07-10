@@ -20,6 +20,7 @@ return {
                 sources = {
                     {name = 'codeium'},
                     {name = 'nvim_lsp'},
+                    {name = 'copilot'},
                 },
                 --- (Optional) Show source name in completion menu
                 formatting = cmp_format,
