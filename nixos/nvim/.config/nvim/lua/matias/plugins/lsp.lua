@@ -12,7 +12,6 @@ return {
         },
         config = function()
 
-            -- This is for adding support for codeium
             local cmp = require('cmp')
             local cmp_format = require('lsp-zero').cmp_format({details = true})
 
@@ -22,7 +21,6 @@ return {
                     {name = 'nvim_lsp'},
                     {name = 'copilot'},
                 },
-                --- (Optional) Show source name in completion menu
                 formatting = cmp_format,
             })
 
@@ -39,7 +37,7 @@ return {
             require('mason').setup({})
             require('mason-lspconfig').setup({
                 ensure_installed = {
-                    --"clangd",
+                    "clangd"
                     --pyright"
                 },
                 handlers = {
