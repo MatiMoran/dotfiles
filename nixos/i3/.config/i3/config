@@ -192,24 +192,26 @@ bar {
 
 default_border pixel 0
 default_floating_border pixel 0
+gaps inner 5
+gaps outer 5
 
 set $m1 "HDMI-A-0"
 set $m2 "DisplayPort-0"
 
 exec_always xrandr --auto
-exec_always xrandr --output $m2 --left-of $m1
-# workspace $ws1 output $m1
+exec_always xrandr --output $m1 --primary --right-of $m2
+workspace $ws1 output $m1
 # workspace $ws3 output $m1
 # workspace $ws5 output $m1
 # workspace $ws7 output $m1
 # workspace $ws9 output $m1
-# workspace $ws2 output $m2
+workspace $ws2 output $m2
 # workspace $ws4 output $m2
 # workspace $ws6 output $m2
 # workspace $ws8 output $m2
 # workspace $ws10 output $m2
 
-exec picom --backend xrender -f -D 5
+exec picom --corner-radius 10 --backend xrender -f -D 5
 exec_always feh --bg-scale ~/.config/i3/wallpaper.jpeg  
 exec_always redshift -P -O 2700
 exec pactl unload-module $(pactl list sinks | grep -A7 'Sink #' | grep -A5 'hdmi' | grep 'Owner Module' | awk '{print $NF}')
