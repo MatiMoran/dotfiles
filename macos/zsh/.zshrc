@@ -235,3 +235,9 @@ export RANGER_FURY_VENV_LOCATION=/Users/matmoran/.fury/fury_venv #Added by Fury 
 declare FURY_BIN_LOCATION="/Users/matmoran/.fury/fury_venv/bin" # Added by Fury CLI installation process
 export PATH="$PATH:$FURY_BIN_LOCATION" # Added by Fury CLI installation process
 # Added by Fury CLI installation process
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/matmoran/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/matmoran/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/matmoran/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/matmoran/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
